@@ -1,15 +1,14 @@
 import { useContext, useEffect } from 'react';
 
-export type Key = [string, ...unknown[]] | readonly [string, ...unknown[]];
+import { useRSQContext } from './hooks/useRSQContext';
+import { Fetcher } from './types/Fetcher';
+import { Key } from './types/Key';
 
-export type FetcherResponse<Data = unknown> = Data | Promise<Data>;
-
-export type Fetcher<Data = unknown, RSQKey extends Key = Key> = RSQKey extends readonly [...infer Arguments]
-    ? (...arguments_: [...Arguments]) => FetcherResponse<Data>
-    : never;
-
-export const useRSQ = <Data, RSQKey extends Key>(key: RSQKey, fetcher: Fetcher<Data, RSQKey>) => {
-    const { fetchValue, revalidate } = useContext();
+export const useRSQ = <Data, RSQKey extends Key>(
+    key: RSQKey,
+    fetcher: Fetcher<Data, RSQKey>
+) => {
+    const { fetchValue } = useRSQContext();
     const value = fetchValue(key, fetcher);
 
     useEffect(() => {

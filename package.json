@@ -32,14 +32,21 @@
     },
     "homepage": "https://github.com/AlexShukel/react-suspended-query#readme",
     "devDependencies": {
-        "@sirse-dev/eslint-config": "^1.0.6",
         "@types/react": "^18.0.14",
+        "@typescript-eslint/eslint-plugin": "^5.30.5",
         "eslint": "^8.19.0",
         "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-react": "^7.30.1",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-simple-import-sort": "^7.0.0",
         "prettier": "^2.7.1",
         "typescript": "^4.7.4"
     },
     "peerDependencies": {
         "react": ">=18"
+    },
+    "dependencies": {
+        "@sirse-dev/safe-context": "^0.1.0"
     }
 }
