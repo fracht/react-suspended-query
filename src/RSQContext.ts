@@ -1,21 +1,13 @@
 import { createSafeContext } from '@sirse-dev/safe-context';
 
-type Resolved<Data> = {
-    type: 'resolved';
-    payload: Data;
-};
-
-type Pending<Data> = {
-    type: 'pending';
-    payload: Promise<Data>;
-};
-
-export type FetchResult<Data> = Resolved<Data> | Pending<Data>;
+import { Fetcher } from './types/Fetcher';
+import { FetchResult } from './types/FetchResult';
+import { Key } from './types/Key';
 
 export type RSQContextType = {
-    fetchValue: <Data>(
-        key: string,
-        fetcher: (key: string) => Promise<Data>
+    fetchValue: <Data, RSQKey extends Key>(
+        key: RSQKey,
+        fetcher: Fetcher<Data, RSQKey>
     ) => FetchResult<Data>;
 };
 

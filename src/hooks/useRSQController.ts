@@ -1,14 +1,18 @@
 import { useCallback, useRef } from 'react';
 
-import { FetchResult, RSQContextType } from '../RSQContext';
+import { RSQContextType } from '../RSQContext';
+import { Fetcher } from '../types/Fetcher';
+import { FetchResult } from '../types/FetchResult';
+import { Key } from '../types/Key';
+import { RSQKeyMap } from '../utils/RSQKeyMap';
 
 export const useRSQController = (): RSQContextType => {
-    const cache = useRef<Map<string, unknown>>(new Map());
+    const cache = useRef<RSQKeyMap>(new RSQKeyMap());
 
     const fetchValue = useCallback(
-        <Data>(
-            key: string,
-            fetcher: (key: string) => Promise<Data>
+        <Data, RSQKey extends Key>(
+            key: RSQKey,
+            fetcher: Fetcher<Data, RSQKey>
         ): FetchResult<Data> => {
             if (cache.current.has(key)) {
                 return {
@@ -17,6 +21,7 @@ export const useRSQController = (): RSQContextType => {
                 };
             }
 
+            // TODO fix fetcher type
             const promise = fetcher(key).then((value) => {
                 cache.current.set(key, value);
                 return value;
