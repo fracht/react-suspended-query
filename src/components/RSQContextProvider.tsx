@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { useRSQController } from '../hooks/useRSQController';
 import { RSQContext } from '../RSQContext';
