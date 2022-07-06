@@ -1,9 +1,9 @@
-import { render, waitFor } from '@testing-library/react';
-import { Suspense } from 'react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+import React, { Suspense, useState } from 'react';
 
-import { RSQContextProvider, useRSQ } from '../src';
+import { createCacheGroup, RSQContextProvider, useRSQ } from '../src';
 
-const FETCH_DELAY = 200;
+const FETCH_DELAY = 100;
 
 const createMockFetcher = () =>
     jest.fn(async () => {
@@ -14,8 +14,10 @@ const createMockFetcher = () =>
 
 describe('useRSQ', () => {
     it('should show loading indicator when fetching and render component after fetch', async () => {
+        const cacheGroup = createCacheGroup();
+
         const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
-            const data = useRSQ('/my/api/url', fetcher);
+            const data = useRSQ('/my/api/url', fetcher, cacheGroup);
 
             return <div>{data}</div>;
         };
@@ -24,7 +26,7 @@ describe('useRSQ', () => {
 
         const { getByText } = render(<TestComponent fetcher={mockFetcher} />, {
             wrapper: ({ children }) => (
-                <RSQContextProvider>
+                <RSQContextProvider cacheGroup={cacheGroup}>
                     <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
                 </RSQContextProvider>
             ),
@@ -37,53 +39,48 @@ describe('useRSQ', () => {
         expect(getByText('Data')).toBeDefined();
     });
 
-    // It('should refetch data on mount', async () => {
-    //     Const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
-    //         Const data = useRSQ('/my/api/url', fetcher);
+    it('should refetch data on mount', async () => {
+        const cacheGroup = createCacheGroup();
 
-    //         UseEffect(() => {
-    //             Console.log('Mount');
-    //             Return () => {
-    //                 Console.log('Unmount');
-    //             };
-    //         }, []);
+        const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
+            const data = useRSQ('/my/api/url', fetcher, cacheGroup);
 
-    //         Return <div>{data}</div>;
-    //     };
+            return <div>{data}</div>;
+        };
 
-    //     Const App = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
-    //         Const [state, setState] = useState(true);
+        const App = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
+            const [state, setState] = useState(true);
 
-    //         Return (
-    //             <React.Fragment>
-    //                 {state && <TestComponent fetcher={fetcher} />}
-    //                 <button
-    //                     OnClick={() => {
-    //                         SetState((old) => !old);
-    //                     }}
-    //                 >
-    //                     Toggle
-    //                 </button>
-    //             </React.Fragment>
-    //         );
-    //     };
+            return (
+                <React.Fragment>
+                    {state && (
+                        <RSQContextProvider cacheGroup={cacheGroup}>
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <TestComponent fetcher={fetcher} />
+                            </Suspense>
+                        </RSQContextProvider>
+                    )}
 
-    //     Const mockFetcher = createMockFetcher();
+                    <button
+                        onClick={() => {
+                            setState((old) => !old);
+                        }}
+                    >
+                        toggle
+                    </button>
+                </React.Fragment>
+            );
+        };
 
-    //     Const { getByText } = render(<App fetcher={mockFetcher} />, {
-    //         Wrapper: ({ children }) => (
-    //             <RSQContextProvider>
-    //                 <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-    //             </RSQContextProvider>
-    //         ),
-    //     });
+        const mockFetcher = createMockFetcher();
 
-    //     Await waitFor(() => getByText('Data'));
+        const { getByText } = render(<App fetcher={mockFetcher} />);
 
-    //     FireEvent.click(getByText('toggle'));
-    //     FireEvent.click(getByText('toggle'));
+        await waitFor(() => getByText('Data'));
 
-    //     // TODO implement revalidateOnMount functionality
-    //     Expect(mockFetcher).toBeCalledTimes(2);
-    // });
+        fireEvent.click(getByText('toggle'));
+        fireEvent.click(getByText('toggle'));
+
+        expect(mockFetcher).toBeCalledTimes(2);
+    });
 });

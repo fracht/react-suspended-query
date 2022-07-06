@@ -1,10 +1,14 @@
 import { PropsWithChildren } from 'react';
 
 import { useRSQController } from '../hooks/useRSQController';
-import { RSQContext } from '../RSQContext';
+import { CacheGroup } from '../types/CacheGroup';
 
-export const RSQContextProvider = ({ children }: PropsWithChildren<{}>) => {
+export type RSQContextProviderProps = PropsWithChildren<{
+    cacheGroup: CacheGroup;
+}>;
+
+export const RSQContextProvider = ({ children, cacheGroup }: RSQContextProviderProps) => {
     const value = useRSQController();
 
-    return <RSQContext.Provider value={value}>{children}</RSQContext.Provider>;
+    return <cacheGroup.context.Provider value={value}>{children}</cacheGroup.context.Provider>;
 };
