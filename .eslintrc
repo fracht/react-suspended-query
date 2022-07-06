@@ -1,0 +1,3 @@
+{
+    "extends": ["@sirse-dev/eslint-config"]
+}
