@@ -1,9 +1,9 @@
 import { useCallback, useRef } from 'react';
 
-import { RSQContextType } from '../RSQContext';
 import { Fetcher } from '../types/Fetcher';
 import { FetchResult } from '../types/FetchResult';
 import { Key } from '../types/Key';
+import { RSQContextType } from '../types/RSQContextType';
 import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 import { RSQKeyMap } from '../utils/RSQKeyMap';
 

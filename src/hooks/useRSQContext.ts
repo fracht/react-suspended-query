@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import invariant from 'tiny-invariant';
 
-import { RSQContext } from '../RSQContext';
+import { CacheGroup } from '../types/CacheGroup';
 
-export const useRSQContext = () => {
-    const context = useContext(RSQContext);
+export const useRSQContext = (cacheGroup: CacheGroup) => {
+    const context = useContext(cacheGroup);
 
-    invariant(context, 'Your App must be wrapped with RSQContextProvider');
+    invariant(context, `Wrap your component with RSQContextProvider using cacheGroup ${cacheGroup.displayName}`);
 
     return context;
 };
