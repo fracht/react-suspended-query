@@ -9,20 +9,18 @@ import { UnionToIntersection } from '../types/UnionToIntersection';
 import { RSQKeyMap } from '../utils/RSQKeyMap';
 
 const normalizeArguments = (key: Key) => {
-    const args: Arguments = typeof key === 'function' ? key() : key;
+    const normalizedArguments: Arguments = typeof key === 'function' ? key() : key;
     return (
-        Array.isArray(args) ? [...args] : args
+        Array.isArray(normalizedArguments) ? [...normalizedArguments] : normalizedArguments
     ) as UnionToIntersection<Arguments>;
 };
 
 export const useRSQController = (): RSQContextType => {
     const cache = useRef<RSQKeyMap<unknown>>(new RSQKeyMap());
+    const hasResolved = useRef<RSQKeyMap<boolean>>(new RSQKeyMap());
 
     const fetchValue = useCallback(
-        <Data, RSQKey extends Key>(
-            key: RSQKey,
-            fetcher: Fetcher<Data, RSQKey>
-        ): FetchResult<Data> => {
+        <Data, RSQKey extends Key>(key: RSQKey, fetcher: Fetcher<Data, RSQKey>): FetchResult<Data> => {
             if (cache.current.has(key)) {
                 return {
                     type: 'resolved',
@@ -30,8 +28,10 @@ export const useRSQController = (): RSQContextType => {
                 };
             }
 
+            hasResolved.current.set(key, false);
             const promise = fetcher(normalizeArguments(key)).then((value) => {
                 cache.current.set(key, value);
+                hasResolved.current.set(key, true);
                 return value;
             });
 
@@ -40,7 +40,7 @@ export const useRSQController = (): RSQContextType => {
                 payload: promise,
             };
         },
-        []
+        [],
     );
 
     return {

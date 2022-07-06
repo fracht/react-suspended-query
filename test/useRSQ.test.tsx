@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useState } from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { RSQContextProvider, useRSQ } from '../src';
 
@@ -7,18 +7,14 @@ const FETCH_DELAY = 200;
 
 const createMockFetcher = () =>
     jest.fn(async () => {
-        await new Promise((res) => setTimeout(res, FETCH_DELAY));
+        await new Promise((resolve) => setTimeout(resolve, FETCH_DELAY));
 
         return 'Data';
     });
 
 describe('useRSQ', () => {
     it('should show loading indicator when fetching and render component after fetch', async () => {
-        const TestComponent = ({
-            fetcher,
-        }: {
-            fetcher: jest.Mock<Promise<string>>;
-        }) => {
+        const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
             const data = useRSQ('/my/api/url', fetcher);
 
             return <div>{data}</div>;
@@ -29,9 +25,7 @@ describe('useRSQ', () => {
         const { getByText } = render(<TestComponent fetcher={mockFetcher} />, {
             wrapper: ({ children }) => (
                 <RSQContextProvider>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        {children}
-                    </Suspense>
+                    <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
                 </RSQContextProvider>
             ),
         });
@@ -44,11 +38,7 @@ describe('useRSQ', () => {
     });
 
     it('should refetch data on mount', async () => {
-        const TestComponent = ({
-            fetcher,
-        }: {
-            fetcher: jest.Mock<Promise<string>>;
-        }) => {
+        const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
             const data = useRSQ('/my/api/url', fetcher);
 
             useEffect(() => {
@@ -83,9 +73,7 @@ describe('useRSQ', () => {
         const { getByText } = render(<App fetcher={mockFetcher} />, {
             wrapper: ({ children }) => (
                 <RSQContextProvider>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        {children}
-                    </Suspense>
+                    <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
                 </RSQContextProvider>
             ),
         });
