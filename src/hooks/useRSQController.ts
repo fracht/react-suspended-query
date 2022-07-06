@@ -1,19 +1,11 @@
 import { useCallback, useRef } from 'react';
 
 import { RSQContextType } from '../RSQContext';
-import { Arguments } from '../types/Arguments';
 import { Fetcher } from '../types/Fetcher';
 import { FetchResult } from '../types/FetchResult';
 import { Key } from '../types/Key';
-import { UnionToIntersection } from '../types/UnionToIntersection';
+import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 import { RSQKeyMap } from '../utils/RSQKeyMap';
-
-const normalizeArguments = (key: Key) => {
-    const normalizedArguments: Arguments = typeof key === 'function' ? key() : key;
-    return (
-        Array.isArray(normalizedArguments) ? [...normalizedArguments] : normalizedArguments
-    ) as UnionToIntersection<Arguments>;
-};
 
 export const useRSQController = (): RSQContextType => {
     const cache = useRef<RSQKeyMap<unknown>>(new RSQKeyMap());
@@ -29,7 +21,9 @@ export const useRSQController = (): RSQContextType => {
             }
 
             hasResolved.current.set(key, false);
-            const promise = fetcher(normalizeArguments(key)).then((value) => {
+            const promise = (fetcher as (...arguments_: unknown[]) => Promise<Data>)(
+                ...convertKeyToArguments(key),
+            ).then((value) => {
                 cache.current.set(key, value);
                 hasResolved.current.set(key, true);
                 return value;

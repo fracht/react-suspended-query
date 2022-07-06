@@ -1,11 +1,7 @@
 import { Key } from './Key';
 
-export type Fetcher<Data = unknown, RSQKey extends Key = Key> = RSQKey extends () => infer Argument
-    ? (argument: Argument) => Promise<Data>
-    : RSQKey extends infer Argument
-    ? (argument: Argument) => Promise<Data>
-    : RSQKey extends [...infer Arguments]
-    ? (arguments_: Arguments) => Promise<Data>
+export type Fetcher<Data, RSQKey extends Key> = RSQKey extends [...infer Arguments]
+    ? (...arguments_: Arguments) => Promise<Data>
     : RSQKey extends () => [...infer Arguments]
-    ? (arguments_: Arguments) => Promise<Data>
-    : never;
+    ? (...arguments_: Arguments) => Promise<Data>
+    : (argument: RSQKey) => Promise<Data>;
