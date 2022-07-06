@@ -10,5 +10,5 @@ export type RSQContextProviderProps = PropsWithChildren<{
 export const RSQContextProvider = ({ children, cacheGroup }: RSQContextProviderProps) => {
     const value = useRSQController();
 
-    return <cacheGroup.context.Provider value={value}>{children}</cacheGroup.context.Provider>;
+    return <cacheGroup.Provider value={value}>{children}</cacheGroup.Provider>;
 };
