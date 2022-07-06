@@ -9,7 +9,6 @@ import { RSQKeyMap } from '../utils/RSQKeyMap';
 
 export const useRSQController = (): RSQContextType => {
     const cache = useRef<RSQKeyMap<unknown>>(new RSQKeyMap());
-    const hasResolved = useRef<RSQKeyMap<boolean>>(new RSQKeyMap());
 
     const fetchValue = useCallback(
         <Data, RSQKey extends Key>(key: RSQKey, fetcher: Fetcher<Data, RSQKey>): FetchResult<Data> => {
@@ -20,12 +19,10 @@ export const useRSQController = (): RSQContextType => {
                 };
             }
 
-            hasResolved.current.set(key, false);
             const promise = (fetcher as (...arguments_: unknown[]) => Promise<Data>)(
                 ...convertKeyToArguments(key),
             ).then((value) => {
                 cache.current.set(key, value);
-                hasResolved.current.set(key, true);
                 return value;
             });
 
