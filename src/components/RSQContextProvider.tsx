@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { useRSQController } from '../hooks/useRSQController';
 import { CacheGroup } from '../types/CacheGroup';

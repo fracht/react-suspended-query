@@ -9,7 +9,7 @@ const configuration = {
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.ts', '.tsx', '.esm.js', '...'],
         alias: {
             react: path.resolve(__dirname, 'node_modules', 'react'),
         },
