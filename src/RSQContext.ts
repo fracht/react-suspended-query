@@ -1,4 +1,4 @@
-import { createSafeContext } from '@sirse-dev/safe-context';
+import { createContext } from 'react';
 
 import { Fetcher } from './types/Fetcher';
 import { FetchResult } from './types/FetchResult';
@@ -11,4 +11,4 @@ export type RSQContextType = {
     ) => FetchResult<Data>;
 };
 
-export const RSQContext = createSafeContext<RSQContextType>();
+export const RSQContext = createContext<RSQContextType | undefined>(undefined);

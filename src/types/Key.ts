@@ -1,1 +1,3 @@
-export type Key = string | Array<unknown> | object;
+import { Arguments } from './Arguments';
+
+export type Key = Arguments | (() => Arguments);
