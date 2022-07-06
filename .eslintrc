@@ -1,3 +1,6 @@
 {
-    "extends": ["@sirse-dev/eslint-config"]
+    "extends": ["@sirse-dev/eslint-config"],
+    "rules": {
+        "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "React" }]
+    }
 }
