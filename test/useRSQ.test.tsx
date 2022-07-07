@@ -1,7 +1,8 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import React, { Suspense, useState } from 'react';
+import React, { PropsWithChildren, Suspense, useState } from 'react';
 
 import { createCacheGroup, RSQContextProvider, useRSQ } from '../src';
+import { CacheGroup } from '../src/types/CacheGroup';
 
 const FETCH_DELAY = 100;
 
@@ -12,19 +13,57 @@ const createMockFetcher = () =>
         return 'Data';
     });
 
+const TestComponent = ({ fetcher, cacheGroup }: { fetcher: jest.Mock<Promise<string>>; cacheGroup: CacheGroup }) => {
+    const data = useRSQ('/my/api/url', fetcher, cacheGroup);
+
+    return <div>{data}</div>;
+};
+
+const EmptyWrapper = ({ children }: PropsWithChildren<{ cacheGroup: CacheGroup }>) => {
+    return <React.Fragment>{children}</React.Fragment>;
+};
+
+const App = ({
+    fetcher,
+    cacheGroup,
+    localCache,
+}: {
+    fetcher: jest.Mock<Promise<string>>;
+    cacheGroup: CacheGroup;
+    localCache?: boolean;
+}) => {
+    const [state, setState] = useState(true);
+
+    const LocalWrapper = localCache ? RSQContextProvider : EmptyWrapper;
+
+    return (
+        <RSQContextProvider cacheGroup={cacheGroup}>
+            {state && (
+                <LocalWrapper cacheGroup={cacheGroup}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <TestComponent fetcher={fetcher} cacheGroup={cacheGroup} />
+                    </Suspense>
+                </LocalWrapper>
+            )}
+
+            <button
+                onClick={() => {
+                    setState((old) => !old);
+                }}
+            >
+                toggle
+            </button>
+        </RSQContextProvider>
+    );
+};
+
 describe('useRSQ', () => {
     it('should show loading indicator when fetching and render component after fetch', async () => {
         const cacheGroup = createCacheGroup();
 
-        const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
-            const data = useRSQ('/my/api/url', fetcher, cacheGroup);
-
-            return <div>{data}</div>;
-        };
-
         const mockFetcher = createMockFetcher();
 
-        const { getByText } = render(<TestComponent fetcher={mockFetcher} />, {
+        const { getByText } = render(<TestComponent fetcher={mockFetcher} cacheGroup={cacheGroup} />, {
             wrapper: ({ children }) => (
                 <RSQContextProvider cacheGroup={cacheGroup}>
                     <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
@@ -39,42 +78,11 @@ describe('useRSQ', () => {
         expect(getByText('Data')).toBeDefined();
     });
 
-    it('should refetch data on mount', async () => {
+    it('should refetch local cache data on mount', async () => {
         const cacheGroup = createCacheGroup();
-
-        const TestComponent = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
-            const data = useRSQ('/my/api/url', fetcher, cacheGroup);
-
-            return <div>{data}</div>;
-        };
-
-        const App = ({ fetcher }: { fetcher: jest.Mock<Promise<string>> }) => {
-            const [state, setState] = useState(true);
-
-            return (
-                <React.Fragment>
-                    {state && (
-                        <RSQContextProvider cacheGroup={cacheGroup}>
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <TestComponent fetcher={fetcher} />
-                            </Suspense>
-                        </RSQContextProvider>
-                    )}
-
-                    <button
-                        onClick={() => {
-                            setState((old) => !old);
-                        }}
-                    >
-                        toggle
-                    </button>
-                </React.Fragment>
-            );
-        };
-
         const mockFetcher = createMockFetcher();
 
-        const { getByText } = render(<App fetcher={mockFetcher} />);
+        const { getByText } = render(<App fetcher={mockFetcher} cacheGroup={cacheGroup} localCache />);
 
         await waitFor(() => getByText('Data'));
 
@@ -82,5 +90,19 @@ describe('useRSQ', () => {
         fireEvent.click(getByText('toggle'));
 
         expect(mockFetcher).toBeCalledTimes(2);
+    });
+
+    it('should not refetch global cache data', async () => {
+        const cacheGroup = createCacheGroup();
+        const mockFetcher = createMockFetcher();
+
+        const { getByText } = render(<App fetcher={mockFetcher} cacheGroup={cacheGroup} />);
+
+        await waitFor(() => getByText('Data'));
+
+        fireEvent.click(getByText('toggle'));
+        fireEvent.click(getByText('toggle'));
+
+        expect(mockFetcher).toBeCalledTimes(1);
     });
 });
