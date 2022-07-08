@@ -3,17 +3,21 @@ import { CacheGroup } from '../types/CacheGroup';
 import { Fetcher } from '../types/Fetcher';
 import { Key } from '../types/Key';
 
-export const useQuery = <Data, RSQKey extends Key>(
-    key: RSQKey,
-    fetcher: Fetcher<Data, RSQKey>,
+export const useQuery = <TData, TKey extends Key>(
+    key: TKey,
+    fetcher: Fetcher<TData, TKey>,
     cacheGroup: CacheGroup,
-): Data => {
+): TData => {
     const { getValue } = useSafeContext(cacheGroup);
-    const value = getValue<Data, RSQKey>(key, fetcher);
+    const fetchResult = getValue<TData, TKey>(key, fetcher);
 
-    if (value.type === 'pending') {
-        throw value.payload;
+    if (fetchResult.status === 'pending') {
+        throw fetchResult.promise;
     }
 
-    return value.payload;
+    if (fetchResult.status === 'rejected') {
+        throw fetchResult.reason;
+    }
+
+    return fetchResult.value;
 };

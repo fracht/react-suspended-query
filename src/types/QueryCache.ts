@@ -3,5 +3,5 @@ import { FetchResult } from './FetchResult';
 import { Key } from './Key';
 
 export type QueryCache = {
-    getValue: <Data, QueryKey extends Key>(key: QueryKey, fetcher: Fetcher<Data, QueryKey>) => FetchResult<Data>;
+    getValue: <TData, TKey extends Key>(key: TKey, fetcher: Fetcher<TData, TKey>) => FetchResult<TData>;
 };

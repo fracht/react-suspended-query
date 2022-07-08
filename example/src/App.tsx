@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { ErrorBoundary } from './ErrorBoundary';
 import { MyForm } from './MyForm';
 
 export const App = () => {
     const [state, setState] = useState(true);
 
     return (
-        <React.Fragment>
+        <ErrorBoundary fallback={<div>Error has occured</div>}>
             {state && <MyForm />}
 
             <button
@@ -15,6 +16,6 @@ export const App = () => {
             >
                 toggle state
             </button>
-        </React.Fragment>
+        </ErrorBoundary>
     );
 };
