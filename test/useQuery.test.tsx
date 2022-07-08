@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import React, { PropsWithChildren, Suspense, useState } from 'react';
 
-import { createCacheGroup, RSQContextProvider, useRSQ } from '../src';
+import { createCacheGroup, QueryCacheProvider, useQuery } from '../src';
 import { CacheGroup } from '../src/types/CacheGroup';
 
 const FETCH_DELAY = 100;
@@ -14,7 +14,7 @@ const createMockFetcher = () =>
     });
 
 const TestComponent = ({ fetcher, cacheGroup }: { fetcher: jest.Mock<Promise<string>>; cacheGroup: CacheGroup }) => {
-    const data = useRSQ('/my/api/url', fetcher, cacheGroup);
+    const data = useQuery('/my/api/url', fetcher, cacheGroup);
 
     return <div>{data}</div>;
 };
@@ -34,10 +34,10 @@ const App = ({
 }) => {
     const [state, setState] = useState(true);
 
-    const LocalWrapper = localCache ? RSQContextProvider : EmptyWrapper;
+    const LocalWrapper = localCache ? QueryCacheProvider : EmptyWrapper;
 
     return (
-        <RSQContextProvider cacheGroup={cacheGroup}>
+        <QueryCacheProvider cacheGroup={cacheGroup}>
             {state && (
                 <LocalWrapper cacheGroup={cacheGroup}>
                     <Suspense fallback={<div>Loading...</div>}>
@@ -53,11 +53,11 @@ const App = ({
             >
                 toggle
             </button>
-        </RSQContextProvider>
+        </QueryCacheProvider>
     );
 };
 
-describe('useRSQ', () => {
+describe('useQuery', () => {
     it('should show loading indicator when fetching and render component after fetch', async () => {
         const cacheGroup = createCacheGroup();
 
@@ -65,9 +65,9 @@ describe('useRSQ', () => {
 
         const { getByText } = render(<TestComponent fetcher={mockFetcher} cacheGroup={cacheGroup} />, {
             wrapper: ({ children }) => (
-                <RSQContextProvider cacheGroup={cacheGroup}>
+                <QueryCacheProvider cacheGroup={cacheGroup}>
                     <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-                </RSQContextProvider>
+                </QueryCacheProvider>
             ),
         });
 

@@ -1,3 +1,1 @@
-import { Arguments } from './Arguments';
-
-export type Key = Arguments;
+export type Key = string | unknown[] | object;

@@ -1,9 +1,9 @@
-import { createContext } from 'react';
+import { createSafeContext } from '@sirse-dev/safe-context';
 import { CacheGroup } from './types/CacheGroup';
-import { RSQContextType } from './types/RSQContextType';
+import { QueryCache } from './types/QueryCache';
 
 export const createCacheGroup = (): CacheGroup => {
-    const context = createContext<RSQContextType | undefined>(undefined);
+    const context = createSafeContext<QueryCache>();
 
     return context;
 };

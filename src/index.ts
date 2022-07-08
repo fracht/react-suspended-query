@@ -1,3 +1,4 @@
-export * from './useRSQ';
-export * from './components/RSQContextProvider';
+// Core API
+export * from './components/QueryCacheProvider';
 export * from './createCacheGroup';
+export * from './hooks/useQuery';

@@ -1,7 +1,7 @@
 import { Key } from '../types/Key';
 import { stringifyKey } from './stringifyKey';
 
-export class RSQKeyMap<Value> {
+export class QueryKeyMap<Value> {
     private values: Map<string, Value> = new Map();
 
     public get(key: Key): Value | undefined {
