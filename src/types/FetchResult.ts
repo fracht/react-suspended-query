@@ -1,11 +1,6 @@
-type Resolved<Data> = {
-    type: 'resolved';
-    payload: Data;
+type PromisePendingResult = {
+    status: 'pending';
+    promise: Promise<unknown>;
 };
 
-type Pending<Data> = {
-    type: 'pending';
-    payload: Promise<Data>;
-};
-
-export type FetchResult<Data> = Resolved<Data> | Pending<Data>;
+export type FetchResult<TData> = PromiseSettledResult<TData> | PromisePendingResult;

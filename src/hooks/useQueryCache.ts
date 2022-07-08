@@ -8,27 +8,35 @@ import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 import { QueryKeyMap } from '../utils/QueryKeyMap';
 
 export const useQueryCache = (): QueryCache => {
-    const cache = useRef<QueryKeyMap<unknown>>(new QueryKeyMap());
+    const cache = useRef<QueryKeyMap<FetchResult<unknown>>>(new QueryKeyMap());
 
     const getValue = useCallback(
-        <Data, QueryKey extends Key>(key: QueryKey, fetcher: Fetcher<Data, QueryKey>): FetchResult<Data> => {
+        <TData, TKey extends Key>(key: TKey, fetcher: Fetcher<TData, TKey>): FetchResult<TData> => {
             if (cache.current.has(key)) {
-                return {
-                    type: 'resolved',
-                    payload: cache.current.get(key) as Data,
-                };
+                return cache.current.get(key) as FetchResult<TData>;
             }
 
-            const promise = (fetcher as (...arguments_: unknown[]) => Promise<Data>)(
-                ...convertKeyToArguments(key),
-            ).then((value) => {
-                cache.current.set(key, value);
-                return value;
-            });
+            const promise = (fetcher as (...arguments_: unknown[]) => Promise<TData>)(...convertKeyToArguments(key))
+                .then((value) => {
+                    cache.current.set(key, {
+                        status: 'fulfilled',
+                        value,
+                    });
+
+                    return value;
+                })
+                .catch((error) => {
+                    cache.current.set(key, {
+                        status: 'rejected',
+                        reason: error,
+                    });
+
+                    return error;
+                });
 
             return {
-                type: 'pending',
-                payload: promise,
+                status: 'pending',
+                promise,
             };
         },
         [],

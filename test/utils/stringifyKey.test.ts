@@ -8,7 +8,7 @@ describe('Stringify key', () => {
 
     it('should stringify object', () => {
         expect(stringifyKey({ key: 'api/url', payload: { value: 42 } })).toBe(
-            stringifyKey({ key: 'api/url', payload: { value: 42 } }),
+            stringifyKey({ payload: { value: 42 }, key: 'api/url' }),
         );
         expect(typeof stringifyKey({ key: 'api/url', payload: { value: 42 } })).toBe('string');
     });

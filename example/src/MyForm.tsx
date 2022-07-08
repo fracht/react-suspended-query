@@ -10,6 +10,9 @@ const _MyForm = () => {
         async () => {
             console.log('Fetching local data...');
             await new Promise((resolve) => setTimeout(resolve, 1000));
+            // Await new Promise((resolve, reject) => {
+            //     Reject('asdf');
+            // });
             return 'local data';
         },
         localCache,
