@@ -1,4 +1,4 @@
-var NodeResolve = require('@esbuild-plugins/node-resolve').default;
+var nodeResolve = require('@esbuild-plugins/node-resolve').default;
 
 /** @type {import('esbuild').Plugin} */
 var excludeCrypto = {
@@ -16,7 +16,7 @@ var excludeCrypto = {
     },
 };
 
-var nodeResolveExternal = NodeResolve({
+var nodeResolveExternal = nodeResolve({
     extensions: ['.ts', '.js', '.tsx', '.jsx', '.cjs', '.mjs'],
     onResolved: (resolved) => {
         if (resolved.includes('object-hash')) {
