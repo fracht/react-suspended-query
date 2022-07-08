@@ -1,50 +1,52 @@
 {
-    "name": "react-suspended-query",
-    "version": "0.0.0",
-    "description": "React library to make queries using react suspenses and cache.",
-    "files": [
-        "dist"
-    ],
-    "main": "./dist/index.js",
-    "types": "./dist/react-suspended-query.d.ts",
-    "module": "./dist/react-suspended-query.esm.js",
-    "scripts": {
-        "build": "aqu build",
-        "start": "aqu watch",
-        "lint": "aqu lint",
-        "lint:fix": "aqu lint --fix",
-        "test": "aqu test --passWithNoTests",
-        "test:watch": "aqu test --passWithNoTests --watch",
-        "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
-        "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
-        "release": "np",
-        "prepublishOnly": "aqu build"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/AlexShukel/react-suspended-query.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/AlexShukel/react-suspended-query/issues"
-    },
-    "homepage": "https://github.com/AlexShukel/react-suspended-query#readme",
-    "devDependencies": {
-        "@sirse-dev/eslint-config": "^1.0.6",
-        "@testing-library/react": "^13.3.0",
-        "@types/jest": "^28.1.4",
-        "@types/react": "^18.0.14",
-        "aqu": "^0.3.2",
-        "eslint": "^8.19.0",
-        "prettier": "^2.7.1",
-        "typescript": "^4.7.4"
-    },
-    "peerDependencies": {
-        "react": ">=18"
-    },
-    "dependencies": {
-        "tiny-invariant": "^1.2.0"
-    }
+  "name": "react-suspended-query",
+  "version": "0.0.0",
+  "description": "React library to make queries using react suspenses and cache.",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/react-suspended-query.d.ts",
+  "module": "./dist/react-suspended-query.esm.js",
+  "scripts": {
+    "build": "aqu build",
+    "start": "aqu watch",
+    "lint": "aqu lint",
+    "lint:fix": "aqu lint --fix",
+    "test": "aqu test --passWithNoTests",
+    "test:watch": "aqu test --passWithNoTests --watch",
+    "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
+    "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
+    "release": "np",
+    "prepublishOnly": "aqu build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexShukel/react-suspended-query.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexShukel/react-suspended-query/issues"
+  },
+  "homepage": "https://github.com/AlexShukel/react-suspended-query#readme",
+  "devDependencies": {
+    "@sirse-dev/eslint-config": "^1.0.6",
+    "@testing-library/react": "^13.3.0",
+    "@types/jest": "^28.1.4",
+    "@types/object-hash": "^2.2.1",
+    "@types/react": "^18.0.14",
+    "aqu": "^0.3.2",
+    "eslint": "^8.19.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "dependencies": {
+    "object-hash": "^3.0.0",
+    "tiny-invariant": "^1.2.0"
+  }
 }

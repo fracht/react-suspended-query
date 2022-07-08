@@ -1,8 +1,5 @@
 import { Key } from '../types/Key';
-
-const stringifyKey = (key: Key): string => {
-    return JSON.stringify(key);
-};
+import { stringifyKey } from './stringifyKey';
 
 export class RSQKeyMap<Value> {
     private values: Map<string, Value> = new Map();
