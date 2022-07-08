@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
+import { createCacheGroup, RSQContextProvider, useRSQ } from 'react-suspended-query';
 import { globalCache } from '.';
-import { createCacheGroup, RSQContextProvider, useRSQ } from '../../dist/react-suspended-query';
 
 const localCache = createCacheGroup();
 
