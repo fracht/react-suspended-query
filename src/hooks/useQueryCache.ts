@@ -3,15 +3,15 @@ import { useCallback, useRef } from 'react';
 import { Fetcher } from '../types/Fetcher';
 import { FetchResult } from '../types/FetchResult';
 import { Key } from '../types/Key';
-import { RSQContextType } from '../types/RSQContextType';
+import { QueryCache } from '../types/QueryCache';
 import { convertKeyToArguments } from '../utils/convertKeyToArguments';
-import { RSQKeyMap } from '../utils/RSQKeyMap';
+import { QueryKeyMap } from '../utils/QueryKeyMap';
 
-export const useRSQController = (): RSQContextType => {
-    const cache = useRef<RSQKeyMap<unknown>>(new RSQKeyMap());
+export const useQueryCache = (): QueryCache => {
+    const cache = useRef<QueryKeyMap<unknown>>(new QueryKeyMap());
 
-    const fetchValue = useCallback(
-        <Data, RSQKey extends Key>(key: RSQKey, fetcher: Fetcher<Data, RSQKey>): FetchResult<Data> => {
+    const getValue = useCallback(
+        <Data, QueryKey extends Key>(key: QueryKey, fetcher: Fetcher<Data, QueryKey>): FetchResult<Data> => {
             if (cache.current.has(key)) {
                 return {
                     type: 'resolved',
@@ -35,6 +35,6 @@ export const useRSQController = (): RSQContextType => {
     );
 
     return {
-        fetchValue,
+        getValue,
     };
 };

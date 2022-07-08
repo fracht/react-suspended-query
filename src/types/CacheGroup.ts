@@ -1,4 +1,4 @@
-import { Context } from 'react';
-import { RSQContextType } from './RSQContextType';
+import { SafeContext } from '@sirse-dev/safe-context';
+import { QueryCache } from './QueryCache';
 
-export type CacheGroup = Context<RSQContextType | undefined>;
+export type CacheGroup = SafeContext<QueryCache>;

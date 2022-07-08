@@ -46,6 +46,7 @@
     "react": ">=18"
   },
   "dependencies": {
+    "@sirse-dev/safe-context": "^0.2.0",
     "object-hash": "^3.0.0",
     "tiny-invariant": "^1.2.0"
   }

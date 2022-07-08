@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
-import { createCacheGroup, RSQContextProvider, useRSQ } from 'react-suspended-query';
+import { createCacheGroup, QueryCacheProvider, useQuery } from 'react-suspended-query';
 import { globalCache } from '.';
 
 const localCache = createCacheGroup();
 
 const _MyForm = () => {
-    const data = useRSQ(
+    const data = useQuery(
         'api/local',
         async () => {
             console.log('Fetching local data...');
@@ -15,7 +15,7 @@ const _MyForm = () => {
         localCache,
     );
 
-    const global = useRSQ(
+    const global = useQuery(
         'api/global',
         async () => {
             console.log('Fetching global data...');
@@ -35,10 +35,10 @@ const _MyForm = () => {
 
 export const MyForm = () => {
     return (
-        <RSQContextProvider cacheGroup={localCache}>
+        <QueryCacheProvider cacheGroup={localCache}>
             <Suspense fallback={<div>Loading...</div>}>
                 <_MyForm />
             </Suspense>
-        </RSQContextProvider>
+        </QueryCacheProvider>
     );
 };
