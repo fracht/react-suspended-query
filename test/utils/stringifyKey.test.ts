@@ -6,10 +6,10 @@ describe('Stringify key', () => {
         expect(typeof stringifyKey('asdf')).toBe('string');
     });
 
-    it('should stringify object', () => {
-        expect(stringifyKey({ key: 'api/url', payload: { value: 42 } })).toBe(
-            stringifyKey({ payload: { value: 42 }, key: 'api/url' }),
+    it('should stringify nested objects', () => {
+        expect(stringifyKey([{ key: 'api/url', payload: { value: 42 } }])).toBe(
+            stringifyKey([{ payload: { value: 42 }, key: 'api/url' }]),
         );
-        expect(typeof stringifyKey({ key: 'api/url', payload: { value: 42 } })).toBe('string');
+        expect(typeof stringifyKey([{ key: 'api/url', payload: { value: 42 } }])).toBe('string');
     });
 });
