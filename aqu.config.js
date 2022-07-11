@@ -4,8 +4,8 @@ var nodeResolve = require('@esbuild-plugins/node-resolve').default;
 var excludeCrypto = {
     name: 'exclude-crypto',
     setup: (build) => {
-        build.onResolve({ filter: /crypto/ }, (args) => ({
-            path: args.path,
+        build.onResolve({ filter: /crypto/ }, (arguments_) => ({
+            path: arguments_.path,
             namespace: 'crypto',
         }));
 
@@ -38,7 +38,7 @@ module.exports = {
     },
     dtsBundleGeneratorOptions: {
         libraries: {
-            importedLibraries: ['react'],
+            importedLibraries: ['react', '@sirse-dev/safe-context'],
             allowedTypesLibraries: [],
         },
     },
