@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import React, { PropsWithChildren, Suspense, useState } from 'react';
 
-import { createCacheGroup, QueryCacheProvider, useQuery } from '../src';
+import { createCacheGroup, useQuery } from '../src';
 import { CacheGroup } from '../src/types/CacheGroup';
 
 const FETCH_DELAY = 100;
@@ -34,10 +34,10 @@ const App = ({
 }) => {
     const [state, setState] = useState(true);
 
-    const LocalWrapper = localCache ? QueryCacheProvider : EmptyWrapper;
+    const LocalWrapper = localCache ? cacheGroup.Provider : EmptyWrapper;
 
     return (
-        <QueryCacheProvider cacheGroup={cacheGroup}>
+        <cacheGroup.Provider>
             {state && (
                 <LocalWrapper cacheGroup={cacheGroup}>
                     <Suspense fallback={<div>Loading...</div>}>
@@ -53,7 +53,7 @@ const App = ({
             >
                 toggle
             </button>
-        </QueryCacheProvider>
+        </cacheGroup.Provider>
     );
 };
 
@@ -65,9 +65,9 @@ describe('useQuery', () => {
 
         const { getByText } = render(<TestComponent fetcher={mockFetcher} cacheGroup={cacheGroup} />, {
             wrapper: ({ children }) => (
-                <QueryCacheProvider cacheGroup={cacheGroup}>
+                <cacheGroup.Provider>
                     <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-                </QueryCacheProvider>
+                </cacheGroup.Provider>
             ),
         });
 

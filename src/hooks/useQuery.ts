@@ -8,7 +8,7 @@ export const useQuery = <TData, TKey extends Key>(
     fetcher: Fetcher<TData, TKey>,
     cacheGroup: CacheGroup,
 ): TData => {
-    const { getValue } = useSafeContext(cacheGroup);
+    const { getValue } = useSafeContext(cacheGroup.CacheContext);
     const fetchResult = getValue<TData, TKey>(key, fetcher);
 
     if (fetchResult.status === 'pending') {
