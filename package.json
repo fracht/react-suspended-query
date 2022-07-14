@@ -1,6 +1,6 @@
 {
     "name": "react-suspended-query",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "description": "React library to make queries using react suspenses and cache.",
     "files": [
         "dist"
