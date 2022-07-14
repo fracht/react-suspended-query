@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { createCacheGroup, QueryCacheProvider, useQuery } from 'react-suspended-query';
+import { createCacheGroup, useQuery } from 'react-suspended-query';
 import { globalCache } from '.';
 
 const localCache = createCacheGroup();
@@ -38,10 +38,10 @@ const _MyForm = () => {
 
 export const MyForm = () => {
     return (
-        <QueryCacheProvider cacheGroup={localCache}>
+        <localCache.Provider>
             <Suspense fallback={<div>Loading...</div>}>
                 <_MyForm />
             </Suspense>
-        </QueryCacheProvider>
+        </localCache.Provider>
     );
 };
