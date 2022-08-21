@@ -1,21 +1,22 @@
 import { Key } from '../types/Key';
+import { QueryCache } from '../types/QueryCache';
 import { stringifyKey } from './stringifyKey';
 
-export class QueryKeyMap<TValue> {
-    private values: Map<string, TValue> = new Map();
+export class QueryKeyMap {
+    constructor(private cache: QueryCache<unknown> = new Map()) {}
 
-    public get(key: Key): TValue | undefined {
+    public get = <TValue>(key: Key): TValue | undefined => {
         const stringifiedKey = stringifyKey(key);
-        return this.values.get(stringifiedKey);
-    }
+        return this.cache.get(stringifiedKey);
+    };
 
-    public set(key: Key, value: TValue) {
+    public set = <TValue>(key: Key, value: TValue) => {
         const stringifiedKey = stringifyKey(key);
-        this.values.set(stringifiedKey, value);
-    }
+        this.cache.set(stringifiedKey, value);
+    };
 
-    public has(key: Key): boolean {
+    public has = (key: Key): boolean => {
         const stringifiedKey = stringifyKey(key);
-        return this.values.has(stringifiedKey);
-    }
+        return this.cache.has(stringifiedKey);
+    };
 }

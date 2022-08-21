@@ -4,11 +4,12 @@ import { Fetcher } from '../types/Fetcher';
 import { FetchResult } from '../types/FetchResult';
 import { Key } from '../types/Key';
 import { QueryCache } from '../types/QueryCache';
+import { QueryCacheBag } from '../types/QueryCacheBag';
 import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 import { QueryKeyMap } from '../utils/QueryKeyMap';
 
-export const useQueryCache = (): QueryCache => {
-    const cache = useRef<QueryKeyMap<FetchResult<unknown>>>(new QueryKeyMap());
+export const useQueryCache = (customCache?: QueryCache<unknown>): QueryCacheBag => {
+    const cache = useRef<QueryCache<unknown>>(new QueryKeyMap(customCache));
 
     const getValue = useCallback(
         <TData, TKey extends Key>(key: TKey, fetcher: Fetcher<TData, TKey>): FetchResult<TData> => {
