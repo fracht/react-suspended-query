@@ -1,8 +1,9 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import React, { PropsWithChildren, Suspense, useState } from 'react';
 
 import { createCacheGroup, useQuery } from '../src';
 import { CacheGroup } from '../src/types/CacheGroup';
+import '@testing-library/jest-dom';
 
 const FETCH_DELAY = 100;
 
@@ -19,7 +20,7 @@ const TestComponent = ({ fetcher, cacheGroup }: { fetcher: jest.Mock<Promise<str
     return <div>{data}</div>;
 };
 
-const EmptyWrapper = ({ children }: PropsWithChildren<{ cacheGroup: CacheGroup }>) => {
+const EmptyWrapper = ({ children }: PropsWithChildren<{}>) => {
     return <React.Fragment>{children}</React.Fragment>;
 };
 
@@ -39,7 +40,7 @@ const App = ({
     return (
         <cacheGroup.Provider>
             {state && (
-                <LocalWrapper cacheGroup={cacheGroup}>
+                <LocalWrapper>
                     <Suspense fallback={<div>Loading...</div>}>
                         <TestComponent fetcher={fetcher} cacheGroup={cacheGroup} />
                     </Suspense>
@@ -71,11 +72,11 @@ describe('useQuery', () => {
             ),
         });
 
-        expect(getByText('Loading...')).toBeDefined();
+        expect(getByText('Loading...')).toBeInTheDocument();
 
         await waitFor(() => getByText('Data'));
 
-        expect(getByText('Data')).toBeDefined();
+        expect(getByText('Data')).toBeInTheDocument();
     });
 
     it('should refetch local cache data on mount', async () => {
@@ -86,8 +87,13 @@ describe('useQuery', () => {
 
         await waitFor(() => getByText('Data'));
 
-        fireEvent.click(getByText('toggle'));
-        fireEvent.click(getByText('toggle'));
+        await act(async () => {
+            await fireEvent.click(getByText('toggle'));
+        });
+
+        await act(async () => {
+            await fireEvent.click(getByText('toggle'));
+        });
 
         expect(mockFetcher).toBeCalledTimes(2);
     });
@@ -100,8 +106,13 @@ describe('useQuery', () => {
 
         await waitFor(() => getByText('Data'));
 
-        fireEvent.click(getByText('toggle'));
-        fireEvent.click(getByText('toggle'));
+        await act(async () => {
+            await fireEvent.click(getByText('toggle'));
+        });
+
+        await act(async () => {
+            await fireEvent.click(getByText('toggle'));
+        });
 
         expect(mockFetcher).toBeCalledTimes(1);
     });
