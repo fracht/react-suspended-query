@@ -2,7 +2,19 @@ import { Suspense } from 'react';
 import { createCacheGroup, useQuery } from 'react-suspended-query';
 import { globalCache } from '.';
 
-const localCache = createCacheGroup();
+const object: Record<string, unknown> = {};
+
+const localCache = createCacheGroup({
+    get: <T,>(key: string) => {
+        console.log('getting', key);
+        return object[key] as T;
+    },
+    set: (key, value) => {
+        console.log('setting', key, value);
+        object[key] = value;
+    },
+    has: (key) => key in object,
+});
 
 const _MyForm = () => {
     const data = useQuery(

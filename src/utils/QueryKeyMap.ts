@@ -1,21 +1,26 @@
+import { FetchResult } from '../types/FetchResult';
 import { Key } from '../types/Key';
+import { QueryStore } from '../types/QueryStore';
 import { stringifyKey } from './stringifyKey';
 
-export class QueryKeyMap<TValue> {
-    private values: Map<string, TValue> = new Map();
+export class QueryKeyMap {
+    constructor(private storage: QueryStore = new Map()) {}
 
-    public get(key: Key): TValue | undefined {
+    public get = <TData>(key: Key): FetchResult<TData> => {
         const stringifiedKey = stringifyKey(key);
-        return this.values.get(stringifiedKey);
-    }
 
-    public set(key: Key, value: TValue) {
-        const stringifiedKey = stringifyKey(key);
-        this.values.set(stringifiedKey, value);
-    }
+        return this.storage.get(stringifiedKey) as FetchResult<TData>;
+    };
 
-    public has(key: Key): boolean {
+    public set = <TData>(key: Key, value: FetchResult<TData>): void => {
         const stringifiedKey = stringifyKey(key);
-        return this.values.has(stringifiedKey);
-    }
+
+        this.storage.set(stringifiedKey, value);
+    };
+
+    public has = (key: Key): boolean => {
+        const stringifiedKey = stringifyKey(key);
+
+        return this.storage.has(stringifiedKey);
+    };
 }
