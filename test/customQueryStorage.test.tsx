@@ -1,13 +1,14 @@
 import { render, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { createCacheGroup, QueryStore, useQuery } from '../src';
+import { FetchResult } from '../src/types/FetchResult';
 import '@testing-library/jest-dom';
 
-const object: Record<string, unknown> = {};
+const object: Record<string, FetchResult<unknown>> = {};
 
-const globalQueryStore: QueryStore = {
-    get: <T,>(key: string) => {
-        return object[key] as T;
+const globalQueryStore: QueryStore<unknown> = {
+    get: (key: string) => {
+        return object[key];
     },
     set: (key, value) => {
         object[key] = value;
