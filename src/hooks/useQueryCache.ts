@@ -8,8 +8,8 @@ import { QueryStore } from '../types/QueryStore';
 import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 import { QueryKeyMap } from '../utils/QueryKeyMap';
 
-export const useQueryCache = (customCache?: QueryStore): QueryCacheBag => {
-    const cache = useRef<QueryKeyMap>(new QueryKeyMap(customCache));
+export const useQueryCache = (customCache?: QueryStore<unknown>): QueryCacheBag => {
+    const cache = useRef<QueryKeyMap<unknown>>(new QueryKeyMap(customCache));
 
     const getValue = useCallback(
         <TData, TKey extends Key>(key: TKey, fetcher: Fetcher<TData, TKey>): FetchResult<TData> => {
