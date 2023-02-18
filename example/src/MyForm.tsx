@@ -1,20 +1,24 @@
 import { Suspense } from 'react';
-import { createCacheGroup, useQuery } from 'react-suspended-query';
+import { createCacheGroup, useQuery, QueryStore, ValuesStore } from 'react-suspended-query';
 import { globalCache } from '.';
 
 const object: Record<string, unknown> = {};
 
-const localCache = createCacheGroup({
-    get: <T,>(key: string) => {
-        console.log('getting', key);
-        return object[key] as T;
-    },
-    set: (key, value) => {
-        console.log('setting', key, value);
-        object[key] = value;
-    },
-    has: (key) => key in object,
-});
+class GlobalQueryStore extends QueryStore {
+    protected override resultsStore: ValuesStore<unknown> = {
+        get: <T,>(key: string) => {
+            console.log('getting', key);
+            return object[key] as T;
+        },
+        set: (key, value) => {
+            console.log('setting', key, value);
+            object[key] = value;
+        },
+        has: (key) => key in object,
+    };
+}
+
+const localCache = createCacheGroup(new GlobalQueryStore());
 
 const _MyForm = () => {
     const data = useQuery(
