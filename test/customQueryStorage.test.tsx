@@ -2,7 +2,7 @@ import { render, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { createCacheGroup, QueryStore, useQuery } from '../src';
 import '@testing-library/jest-dom';
-import { ValuesStore } from '../src/types/ValueStore';
+import { ValuesStore } from '../src/types/ValuesStore';
 import { stringifyKey } from '../src/utils/stringifyKey';
 
 const resultsStorage: Record<string, unknown> = {};

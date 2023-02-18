@@ -1,7 +1,7 @@
 import { stringifyKey } from '../utils/stringifyKey';
 import { FetchResult } from './FetchResult';
 import { Key } from './Key';
-import { ValuesStore } from './ValueStore';
+import { ValuesStore } from './ValuesStore';
 
 export class QueryStore {
     protected resultsStore: ValuesStore<unknown> = new Map<string, unknown>();
