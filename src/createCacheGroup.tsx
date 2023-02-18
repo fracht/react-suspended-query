@@ -5,7 +5,7 @@ import { CacheGroup } from './types/CacheGroup';
 import { QueryCacheBag } from './types/QueryCacheBag';
 import { QueryStore } from './types/QueryStore';
 
-export const createCacheGroup = (customStore?: QueryStore<unknown>): CacheGroup => {
+export const createCacheGroup = (customStore?: QueryStore): CacheGroup => {
     const CacheContext = createSafeContext<QueryCacheBag>();
 
     return {
