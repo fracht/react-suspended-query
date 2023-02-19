@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import { Fetcher } from '../types/Fetcher';
-import { FetchResult } from '../types/FetchResult';
+import { FetchResult, PromisePendingResult } from '../types/FetchResult';
 import { Key } from '../types/Key';
 import { QueryCacheBag } from '../types/QueryCacheBag';
 import { QueryStore } from '../types/QueryStore';
@@ -33,10 +33,14 @@ export const useQueryCache = (queryStore?: QueryStore): QueryCacheBag => {
                 return error;
             });
 
-        return {
+        const pendingFetchResult: PromisePendingResult = {
             status: 'pending',
             promise,
         };
+
+        cache.current.set(key, pendingFetchResult);
+
+        return pendingFetchResult;
     }, []);
 
     return {

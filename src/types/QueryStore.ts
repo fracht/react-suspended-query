@@ -1,12 +1,13 @@
 import { stringifyKey } from '../utils/stringifyKey';
 import { FetchResult } from './FetchResult';
 import { Key } from './Key';
-import { ValuesStore } from './ValuesStore';
+import { StrictMap } from './StrictMap';
+import { ValueStore } from './ValueStore';
 
 export class QueryStore {
-    protected resultsStore: ValuesStore<unknown> = new Map<string, unknown>();
-    protected pendingResultsStore: ValuesStore<Promise<unknown>> = new Map<string, Promise<unknown>>();
-    protected errorsStore: ValuesStore<unknown> = new Map<string, unknown>();
+    protected resultsStore: ValueStore<unknown> = new StrictMap<unknown>();
+    protected pendingResultsStore: ValueStore<Promise<unknown>> = new StrictMap<Promise<unknown>>();
+    protected errorsStore: ValueStore<unknown> = new StrictMap<unknown>();
 
     public get = (key: Key): FetchResult => {
         const stringifiedKey = stringifyKey(key);
@@ -14,21 +15,21 @@ export class QueryStore {
         if (this.resultsStore.has(stringifiedKey)) {
             return {
                 status: 'fulfilled',
-                value: this.resultsStore.get(stringifiedKey)!,
+                value: this.resultsStore.get(stringifiedKey)!.value,
             };
         }
 
         if (this.pendingResultsStore.has(stringifiedKey)) {
             return {
                 status: 'pending',
-                promise: this.pendingResultsStore.get(stringifiedKey)!,
+                promise: this.pendingResultsStore.get(stringifiedKey)!.value,
             };
         }
 
         if (this.errorsStore.has(stringifiedKey)) {
             return {
                 status: 'rejected',
-                reason: this.errorsStore.get(stringifiedKey)!,
+                reason: this.errorsStore.get(stringifiedKey)!.value,
             };
         }
 
