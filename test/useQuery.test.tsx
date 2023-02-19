@@ -2,7 +2,7 @@ import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import React, { PropsWithChildren, Suspense, useState } from 'react';
 
 import { createCacheGroup, useQuery } from '../src';
-import { CacheGroup } from '../src/types/CacheGroup';
+import { CacheGroup } from '../src/CacheGroup';
 import '@testing-library/jest-dom';
 
 const FETCH_DELAY = 100;

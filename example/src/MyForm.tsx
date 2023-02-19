@@ -1,17 +1,15 @@
 import { Suspense } from 'react';
-import { createCacheGroup, useQuery, QueryStore, ValuesStore } from 'react-suspended-query';
+import { createCacheGroup, useQuery, QueryStore, ValueStore } from 'react-suspended-query';
 import { globalCache } from '.';
 
 const object: Record<string, unknown> = {};
 
 class GlobalQueryStore extends QueryStore {
-    protected override resultsStore: ValuesStore<unknown> = {
-        get: <T,>(key: string) => {
-            console.log('getting', key);
-            return object[key] as T;
+    protected override resultsStore: ValueStore<unknown> = {
+        get: (key: string) => {
+            return object[key];
         },
         set: (key, value) => {
-            console.log('setting', key, value);
             object[key] = value;
         },
         has: (key) => key in object,
@@ -24,7 +22,6 @@ const _MyForm = () => {
     const data = useQuery(
         'api/local',
         async () => {
-            console.log('Fetching local data...');
             await new Promise((resolve) => setTimeout(resolve, 1000));
             // Await new Promise((resolve, reject) => {
             //     Reject('asdf');
@@ -37,7 +34,6 @@ const _MyForm = () => {
     const global = useQuery(
         'api/global',
         async () => {
-            console.log('Fetching global data...');
             await new Promise((resolve) => setTimeout(resolve, 1000));
             return 'global data';
         },

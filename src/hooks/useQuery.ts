@@ -1,7 +1,7 @@
 import { useSafeContext } from '@sirse-dev/safe-context';
-import { CacheGroup } from '../types/CacheGroup';
-import { Fetcher } from '../types/Fetcher';
-import { Key } from '../types/Key';
+import { CacheGroup } from '../CacheGroup';
+import { Fetcher } from '../Fetcher';
+import { Key } from '../Key';
 
 export const useQuery = <TData, TKey extends Key>(
     key: TKey,

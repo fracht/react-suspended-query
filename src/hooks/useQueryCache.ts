@@ -1,10 +1,10 @@
 import { useCallback, useRef } from 'react';
 
-import { Fetcher } from '../types/Fetcher';
-import { FetchResult, PromisePendingResult } from '../types/FetchResult';
-import { Key } from '../types/Key';
-import { QueryCacheBag } from '../types/QueryCacheBag';
-import { QueryStore } from '../types/QueryStore';
+import { Fetcher } from '../Fetcher';
+import { FetchResult, PromisePendingResult } from '../FetchResult';
+import { Key } from '../Key';
+import { QueryCacheBag } from '../QueryCacheBag';
+import { QueryStore } from '../QueryStore';
 import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 
 export const useQueryCache = (queryStore?: QueryStore): QueryCacheBag => {

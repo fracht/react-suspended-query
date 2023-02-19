@@ -2,8 +2,8 @@ import { render, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { createCacheGroup, QueryStore, useQuery } from '../src';
 import '@testing-library/jest-dom';
-import { ValueStore } from '../src/types/ValueStore';
 import { stringifyKey } from '../src/utils/stringifyKey';
+import { ValueStore } from '../src/ValueStore';
 
 const resultsStorage: Record<string, unknown> = {};
 
@@ -11,9 +11,7 @@ const mockSet = jest.fn((key: string, value: unknown) => {
     resultsStorage[key] = value;
 });
 const mockGet = jest.fn((key: string) => {
-    return {
-        value: resultsStorage[key],
-    };
+    return resultsStorage[key];
 });
 const mockHas = jest.fn((key: string) => {
     return key in resultsStorage;

@@ -1,4 +1,4 @@
-import { StrictMap } from '../src/types/StrictMap';
+import { StrictMap } from '../src/StrictMap';
 
 describe('StrictMap functionality', () => {
     it('should throw error when getting not existing value', () => {
