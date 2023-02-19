@@ -1,7 +1,7 @@
-import { stringifyKey } from '../utils/stringifyKey';
 import { FetchResult } from './FetchResult';
 import { Key } from './Key';
 import { StrictMap } from './StrictMap';
+import { stringifyKey } from './utils/stringifyKey';
 import { ValueStore } from './ValueStore';
 
 export class QueryStore {
@@ -15,21 +15,21 @@ export class QueryStore {
         if (this.resultsStore.has(stringifiedKey)) {
             return {
                 status: 'fulfilled',
-                value: this.resultsStore.get(stringifiedKey)!.value,
+                value: this.resultsStore.get(stringifiedKey)!,
             };
         }
 
         if (this.pendingResultsStore.has(stringifiedKey)) {
             return {
                 status: 'pending',
-                promise: this.pendingResultsStore.get(stringifiedKey)!.value,
+                promise: this.pendingResultsStore.get(stringifiedKey)!,
             };
         }
 
         if (this.errorsStore.has(stringifiedKey)) {
             return {
                 status: 'rejected',
-                reason: this.errorsStore.get(stringifiedKey)!.value,
+                reason: this.errorsStore.get(stringifiedKey)!,
             };
         }
 

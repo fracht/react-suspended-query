@@ -1,14 +1,12 @@
 export class StrictMap<TData> {
     private map = new Map<string, TData>();
 
-    public get = (key: string): { value: TData } => {
+    public get = (key: string): TData => {
         if (!this.map.has(key)) {
             throw new Error(`Cannot get data with key "${key}" from StrictMap.`);
         }
 
-        return {
-            value: this.map.get(key)!,
-        };
+        return this.map.get(key)!;
     };
 
     public set = (key: string, value: TData) => {

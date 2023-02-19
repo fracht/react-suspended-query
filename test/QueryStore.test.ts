@@ -1,4 +1,4 @@
-import { QueryStore } from '../src/types/QueryStore';
+import { QueryStore } from '../src/QueryStore';
 
 describe('QueryStore functionality', () => {
     it('should store primitive values', () => {
