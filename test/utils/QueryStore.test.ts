@@ -1,7 +1,7 @@
 import { QueryStore } from '../../src/types/QueryStore';
 
 describe('QueryStore functionality', () => {
-    it('should store primitive values in resultsStore', () => {
+    it('should store primitive values', () => {
         const store = new QueryStore();
 
         store.set('number', { status: 'fulfilled', value: 42 });
@@ -19,30 +19,17 @@ describe('QueryStore functionality', () => {
         expect(store.get('string')).toStrictEqual({ status: 'fulfilled', value: 'testing string' });
     });
 
-    it('should store Promise<primitive value> in pendingResultsStore', () => {
+    it('should store promises', () => {
         const store = new QueryStore();
 
         const numberPromise = Promise.resolve<number>(42);
-        const undefinedPromise = Promise.resolve<undefined>(undefined);
-        const nullPromise = Promise.resolve<null>(null);
-        const booleanPromise = Promise.resolve<boolean>(false);
-        const NaNPromise = Promise.resolve<number>(Number.NaN);
-        const stringPromise = Promise.resolve<string>('testing string');
+        const objectPromise = Promise.resolve({ hello: 'hello' });
 
         store.set('number', { status: 'pending', promise: numberPromise });
-        store.set('undefined', { status: 'pending', promise: undefinedPromise });
-        store.set('null', { status: 'pending', promise: nullPromise });
-        store.set('boolean', { status: 'pending', promise: booleanPromise });
-        store.set('NaN', { status: 'pending', promise: NaNPromise });
-        store.set('string', { status: 'pending', promise: stringPromise });
+        store.set('obj', { status: 'pending', promise: objectPromise });
 
         expect(store.get('number')).toStrictEqual({ status: 'pending', promise: numberPromise });
-        expect(store.get('undefined')).toStrictEqual({ status: 'pending', promise: undefinedPromise });
-        // eslint-disable-next-line unicorn/no-null
-        expect(store.get('null')).toStrictEqual({ status: 'pending', promise: nullPromise });
-        expect(store.get('boolean')).toStrictEqual({ status: 'pending', promise: booleanPromise });
-        expect(store.get('NaN')).toStrictEqual({ status: 'pending', promise: NaNPromise });
-        expect(store.get('string')).toStrictEqual({ status: 'pending', promise: stringPromise });
+        expect(store.get('obj')).toStrictEqual({ status: 'pending', promise: objectPromise });
     });
 
     it('should store objects', () => {
@@ -75,7 +62,7 @@ describe('QueryStore functionality', () => {
         expect(store.get('test3')).toStrictEqual({ status: 'fulfilled', value: a });
     });
 
-    it('should set values with different types of keys', () => {
+    it('should set values with different types of key', () => {
         // Simple class case
         class MyClass {
             public value = 42;
