@@ -19,5 +19,5 @@ export const useQuery = <TData, TKey extends Key>(
         throw fetchResult.reason;
     }
 
-    return fetchResult.value;
+    return fetchResult.value as TData;
 };

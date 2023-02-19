@@ -9,7 +9,9 @@
             ],
             "rules": {
                 "@typescript-eslint/naming-convention": "off",
-                "unicorn/prefer-spread": "off"
+                "unicorn/prefer-spread": "off",
+                "unicorn/no-null": "off",
+                "unicorn/no-useless-undefined": "off"
             }
         }
     ]

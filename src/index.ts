@@ -6,3 +6,4 @@ export * from './hooks/useQuery';
 export * from './types/CacheGroup';
 export * from './types/FetchResult';
 export * from './types/QueryStore';
+export * from './types/ValueStore';

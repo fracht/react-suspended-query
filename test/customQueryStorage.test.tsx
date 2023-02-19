@@ -1,22 +1,33 @@
 import { render, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { createCacheGroup, QueryStore, useQuery } from '../src';
-import { FetchResult } from '../src/types/FetchResult';
 import '@testing-library/jest-dom';
+import { ValueStore } from '../src/types/ValueStore';
+import { stringifyKey } from '../src/utils/stringifyKey';
 
-const object: Record<string, FetchResult<unknown>> = {};
+const resultsStorage: Record<string, unknown> = {};
 
-const globalQueryStore: QueryStore<unknown> = {
-    get: (key: string) => {
-        return object[key];
-    },
-    set: (key, value) => {
-        object[key] = value;
-    },
-    has: (key) => key in object,
-};
+const mockSet = jest.fn((key: string, value: unknown) => {
+    resultsStorage[key] = value;
+});
+const mockGet = jest.fn((key: string) => {
+    return {
+        value: resultsStorage[key],
+    };
+});
+const mockHas = jest.fn((key: string) => {
+    return key in resultsStorage;
+});
 
-const CacheGroup = createCacheGroup(globalQueryStore);
+class GlobalQueryStore extends QueryStore {
+    protected override resultsStore: ValueStore<unknown> = {
+        set: mockSet,
+        get: mockGet,
+        has: mockHas,
+    };
+}
+
+const CacheGroup = createCacheGroup(new GlobalQueryStore());
 
 type TestComponentProps = {
     fetcher: () => Promise<string>;
@@ -46,6 +57,13 @@ describe('Possibility to provide custom query storage', () => {
 
         await waitFor(() => {
             expect(getByText('Data')).toBeInTheDocument();
+
+            expect(mockSet.mock.calls.length).toBe(1);
+            expect(mockSet.mock.calls[0][0]).toBe(stringifyKey('hello'));
+            expect(mockSet.mock.calls[0][1]).toBe('Data');
+
+            expect(mockGet.mock.calls.length).toBe(1);
+            expect(mockGet.mock.calls[0][0]).toBe(stringifyKey('hello'));
         });
     });
 });
