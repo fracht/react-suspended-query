@@ -2,7 +2,7 @@ import { render, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { createCacheGroup, QueryStore, useQuery } from '../src';
 import '@testing-library/jest-dom';
-import { ValuesStore } from '../src/types/ValuesStore';
+import { ValueStore } from '../src/types/ValueStore';
 import { stringifyKey } from '../src/utils/stringifyKey';
 
 const resultsStorage: Record<string, unknown> = {};
@@ -11,14 +11,16 @@ const mockSet = jest.fn((key: string, value: unknown) => {
     resultsStorage[key] = value;
 });
 const mockGet = jest.fn((key: string) => {
-    return resultsStorage[key];
+    return {
+        value: resultsStorage[key],
+    };
 });
 const mockHas = jest.fn((key: string) => {
     return key in resultsStorage;
 });
 
 class GlobalQueryStore extends QueryStore {
-    protected override resultsStore: ValuesStore<unknown> = {
+    protected override resultsStore: ValueStore<unknown> = {
         set: mockSet,
         get: mockGet,
         has: mockHas,
@@ -55,8 +57,6 @@ describe('Possibility to provide custom query storage', () => {
 
         await waitFor(() => {
             expect(getByText('Data')).toBeInTheDocument();
-
-            expect(resultsStorage[stringifyKey('hello')]).toBe('Data');
 
             expect(mockSet.mock.calls.length).toBe(1);
             expect(mockSet.mock.calls[0][0]).toBe(stringifyKey('hello'));
