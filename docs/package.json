@@ -1,0 +1,27 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@sirse-dev/eslint-config": "^2.2.0",
+    "eslint": "^8.19.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4",
+    "vitepress": "1.0.0-alpha.46"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search"
+      ]
+    }
+  }
+}

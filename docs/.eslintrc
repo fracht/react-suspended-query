@@ -1,0 +1,6 @@
+{
+    "root": true,
+    "extends": [
+        "@sirse-dev/eslint-config"
+    ]
+}
