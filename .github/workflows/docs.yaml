@@ -49,14 +49,10 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm --filter docs build
-
-      - uses: actions/configure-pages@v2
-
-      - uses: actions/upload-pages-artifact@v1
-        with:
-          path: docs/.vitepress/dist
+        run: pnpm --filter docs build --base /${{ github.event.repository.name }}/
 
       - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v1
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: docs/.vitepress/dist
