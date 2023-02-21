@@ -8,6 +8,7 @@ coverage
 dist
 .parcel-cache
 .turbo
+.vscode
 
 # misc
 .DS_Store
@@ -26,3 +27,6 @@ yarn-error.log*
 
 # Intellij IDE automatically generated folder
 .idea
+
+# Vitepress
+cache
