@@ -1,16 +1,12 @@
 name: Deploy
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   push:
     branches:
       - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    permissions:
-      pages: write
-      id-token: write
 
     environment:
       name: github-pages
@@ -55,5 +51,5 @@ jobs:
       - name: Deploy to GH Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.BOT_GITHUB_TOKEN }}
           publish_dir: docs/.vitepress/dist
