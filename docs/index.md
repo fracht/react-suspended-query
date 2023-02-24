@@ -2,10 +2,10 @@
 
 ## What is it?
 
-- React fetching library
-- Uses [Suspense API](https://beta.reactjs.org/reference/react/Suspense)
-- Has `cache groups` system to cache fetched values
-- Inspired by [swr](https://swr.vercel.app/)
+-   React fetching library
+-   Uses [Suspense API](https://beta.reactjs.org/reference/react/Suspense)
+-   Has `cache groups` system to cache fetched values
+-   Inspired by [swr](https://swr.vercel.app/)
 
 ## The classic way to fetch data
 
@@ -52,31 +52,31 @@ With these features we can get rid of unnecessary states and conditions that wer
 ```jsx
 const SomeComponent = () => {
     // Create state for data, error and loading
-    const [data, setData] = useState(null) // [!code --:3]
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [data, setData] = useState(null); // [!code --:3]
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Create useEffect to fetch data
-    useEffect(() => { // [!code --:6]
+    useEffect(() => {
+        // [!code --:6]
         fetch('https://some-url/data')
             .then(setData)
             .catch(setError)
-            .finally(() => setLoading(false))
-    }, [])
+            .finally(() => setLoading(false));
+    }, []);
 
     // Make conditional rendering
-    if (loading) { // [!code --:7]
-        return <Spinner />
+    if (loading) {
+        // [!code --:7]
+        return <Spinner />;
     }
 
     if (error) {
-        return <ErrorMessage error={error} />
+        return <ErrorMessage error={error} />;
     }
 
-    return <pre>
-        {JSON.stringify(data, undefined, 2)}
-    </pre>
-}
+    return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
+};
 ```
 
 The resulting code looks minimalist and elegant comparing to the standard way.
@@ -87,18 +87,26 @@ const CacheGroup = createCacheGroup(); // [!code ++]
 const SomeComponent = () => {
     const data = useQuery('https://some-url/data', fetch, CacheGroup); // [!code ++]
 
-    return <pre>
-        {JSON.stringify(data, undefined, 2)}
-    </pre>
-}
+    return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
+};
 
 const App = () => {
-    return <CacheGroup.Provider> // [!code ++]
-        <ErrorBoundary> // [!code ++]
-            <Suspense fallback={<FallbackComponent />}> // [!code ++]
-                <SomeComponent />
-            </Suspense> // [!code ++]
-        </ErrorBoundary> // [!code ++]
-    </CacheGroup.Provider> // [!code ++]
-}
+    return (
+        <CacheGroup.Provider>
+            {' '}
+            // [!code ++]
+            <ErrorBoundary>
+                {' '}
+                // [!code ++]
+                <Suspense fallback={<FallbackComponent />}>
+                    {' '}
+                    // [!code ++]
+                    <SomeComponent />
+                </Suspense>{' '}
+                // [!code ++]
+            </ErrorBoundary>{' '}
+            // [!code ++]
+        </CacheGroup.Provider>
+    ); // [!code ++]
+};
 ```

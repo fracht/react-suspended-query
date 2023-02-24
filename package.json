@@ -13,7 +13,7 @@
         "start": "aqu watch",
         "lint": "eslint src test",
         "lint:fix": "aqu lint --fix",
-        "format": "prettier --write **/*.{ts,tsx,js,jsx,json}",
+        "format": "prettier --write **/*.{ts,tsx,js,jsx,json,md,yml,yaml}",
         "test": "aqu test --passWithNoTests",
         "test:watch": "aqu test --passWithNoTests --watch",
         "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
