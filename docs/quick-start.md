@@ -39,14 +39,16 @@ export const App = () => {
     return (
         <CacheGroup.Provider>
             <ErrorBoundary>
-                <Suspense fallback={<FallbackComponent />}>// Your app code</Suspense>
+                <Suspense fallback={<FallbackComponent />}>
+                    // Your app code
+                </Suspense>
             </ErrorBoundary>
         </CacheGroup.Provider>
     );
 };
 ```
 
--   `CacheGroup.Provider` stores fetch results in a context. You can wrap entire App to make globally available cache or wrap only part of your App to make local cache. You are not limited to the number of `CacheGroup` providers in your App.
+-   `CacheGroup.Provider` stores fetch results in a context. You can wrap entire App to make globally available cache or wrap only part of your App to make local cache. You are not limited to the number of `CacheGroup` providers.
 
 -   `ErrorBoundary` - if an error has occurred while fetching data, you need to use error boundary to render appropriate UI. See [official documentation](https://beta.reactjs.org/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
 
@@ -54,14 +56,40 @@ export const App = () => {
 
 It is not mandatory to wrap an entire App with these components - you can create the `loading` and `error` rendering logic for each component independently.
 
-Then you can use `useQuery` hook in a component to fetch data. For example:
+## Fetch static resource
 
-```jsx
+If you need to fetch some static resource that do not depend on any dynamic data, you can use `useQuery` like this:
+
+```jsx{2}
 const MyComponent = () => {
-    const data = useQuery('https://some-url/data', fetcher, CacheGroup);
+    const data = useQuery('https://some-url/static', fetcher, CacheGroup);
 
     return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
 };
 ```
 
-Now you are ready to go! 🎉
+Or, you can pass an array in a first argument that will be passed to the fetcher:
+
+```jsx{2}
+const MyComponent = () => {
+    const data = useQuery(['https://some-url/static', ...], fetcher, CacheGroup);
+
+    return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
+};
+```
+
+## Fetch dynamic data
+
+If you need to fetch data that depends on some dynamic value (for example, current user id), you can use `useQuery` as follows:
+
+```jsx{2}
+const MyComponent = ({ userId }) => {
+    const data = useQuery(`https://some-url/data?id=${userId}`, fetcher, CacheGroup);
+
+    return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
+};
+```
+
+Now every time the `userId` changes, fetcher will be invoked and cache updated automatically!
+
+Now you are ready to get started! 🎉

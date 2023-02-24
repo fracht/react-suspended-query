@@ -45,29 +45,25 @@ As you can see, there is a lot of boilerplate code and it is hard to write compo
 
 ## The solution with Suspense
 
-In React 18 you can use [Suspense](https://beta.reactjs.org/reference/react/Suspense) to render fallback until component is loading. In addition, you can wrap your component with [ErrorBoundary]() and handle fetch error there.
+In React 18 you can use [Suspense](https://beta.reactjs.org/reference/react/Suspense) to render fallback until component is loading. In addition, you can wrap your component with [ErrorBoundary]() to catch fetch errors.
 
-With these features we can get rid of unnecessary states and conditions that were supposed to handle loading and error states. In addition, value for `data` moves up in a cache.
+With these features we can get rid of unnecessary states and conditions that were supposed to handle `loading` and `error` states. In addition, there is no need to save `data` in a state just to set it once in `useEffect` - so value for `data` can be moved into a react reference.
 
 ```jsx
 const SomeComponent = () => {
-    // Create state for data, error and loading
     const [data, setData] = useState(null); // [!code --:3]
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Create useEffect to fetch data
-    useEffect(() => {
-        // [!code --:6]
+    useEffect(() => { // [!code --:6]
         fetch('https://some-url/data')
             .then(setData)
             .catch(setError)
             .finally(() => setLoading(false));
     }, []);
 
-    // Make conditional rendering
-    if (loading) {
-        // [!code --:7]
+
+    if (loading) { // [!code --:7]
         return <Spinner />;
     }
 
@@ -79,7 +75,7 @@ const SomeComponent = () => {
 };
 ```
 
-The resulting code looks minimalist and elegant comparing to the standard way.
+As you can see, we have successfully deleted all boilerplate imperative code and the final result looks minimalist and declarative.
 
 ```jsx
 const CacheGroup = createCacheGroup(); // [!code ++]
@@ -92,21 +88,13 @@ const SomeComponent = () => {
 
 const App = () => {
     return (
-        <CacheGroup.Provider>
-            {' '}
-            // [!code ++]
+        <CacheGroup.Provider> // [!code ++:3]
             <ErrorBoundary>
-                {' '}
-                // [!code ++]
                 <Suspense fallback={<FallbackComponent />}>
-                    {' '}
-                    // [!code ++]
                     <SomeComponent />
-                </Suspense>{' '}
-                // [!code ++]
-            </ErrorBoundary>{' '}
-            // [!code ++]
+                </Suspense> // [!code ++:3]
+            </ErrorBoundary>
         </CacheGroup.Provider>
-    ); // [!code ++]
+    );
 };
 ```
