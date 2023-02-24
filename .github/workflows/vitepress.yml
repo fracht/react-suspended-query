@@ -39,7 +39,7 @@ jobs:
               uses: covbot/pnpm-install-with-cache@v1
 
             - name: Build
-              run: pnpm --filter docs build --base /${{ github.event.repository.name }}/
+              run: pnpm docs:build --base /${{ github.event.repository.name }}/
 
             - name: Deploy to GH Pages 🚀
               uses: peaceiris/actions-gh-pages@v3
