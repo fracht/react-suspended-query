@@ -4,7 +4,6 @@
 
 This package was inspired by [SWR](https://swr.vercel.app/).
 
-
 ## Installation
 
 ```bash
@@ -22,31 +21,29 @@ The classic way of fetching data in React looks like this:
 ```jsx
 const SomeComponent = () => {
     // Create state for data, error and loading
-    const [data, setData] = useState(null)
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Create useEffect to fetch data
     useEffect(() => {
         fetch('https://some-url/data')
             .then(setData)
             .catch(setError)
-            .finally(() => setLoading(false))
-    }, [])
+            .finally(() => setLoading(false));
+    }, []);
 
     // Make conditional rendering
     if (loading) {
-        return <Spinner />
+        return <Spinner />;
     }
 
     if (error) {
-        return <ErrorMessage error={error} />
+        return <ErrorMessage error={error} />;
     }
 
-    return <div>
-        {data}
-    </div>
-}
+    return <div>{data}</div>;
+};
 ```
 
 As you can see, there is a lot of boilerplate code and it is hard to write components like that.
@@ -91,17 +88,20 @@ react-suspended-query provides the possibility to define cache groups. By defaul
 ### useQuery
 
 #### Calls given fetcher and processes the query:
-- When promise is pending - renders Suspense.
-- When fetcher throws error - passes it up the component tree.
-- When promise resolves - returns data.
+
+-   When promise is pending - renders Suspense.
+-   When fetcher throws error - passes it up the component tree.
+-   When promise resolves - returns data.
 
 #### Arguments:
+
 1. `key` - a string or an array of values fetcher depends on.
 2. `fetcher` - function, which accepts your `key` in arguments and returns promise.
 
 #### Example usage:
+
 ```jsx
-const data = useQuery(['https://some-url/data', id], (key, id) => fetch(`${key}/${id}`))
+const data = useQuery(['https://some-url/data', id], (key, id) => fetch(`${key}/${id}`));
 ```
 
 <br/>
@@ -111,15 +111,15 @@ const data = useQuery(['https://some-url/data', id], (key, id) => fetch(`${key}/
 #### Used to create cache group provider. Returns CacheGroup.
 
 #### Example usage:
+
 ```jsx
-const CacheGroup = createCacheGroup()
+const CacheGroup = createCacheGroup();
 
 const App = () => {
-    return <CacheGroup.Provider>
-        {/* JSX */}
-    </CacheGroup.Provider>
-}
+    return <CacheGroup.Provider>{/* JSX */}</CacheGroup.Provider>;
+};
 ```
+
 <br/>
 
 ## License

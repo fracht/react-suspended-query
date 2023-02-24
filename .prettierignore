@@ -1,0 +1,4 @@
+docs\.vitepress\cache
+docs\.vitepress\dist
+dist
+pnpm-lock.yaml
