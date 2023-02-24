@@ -24,6 +24,7 @@ importers:
       react-dom: ^18.2.0
       tiny-invariant: ^1.2.0
       typescript: ^4.7.4
+      vitepress: 1.0.0-alpha.46
     dependencies:
       '@sirse-dev/safe-context': 0.2.0_react@18.2.0
       object-hash: 3.0.0
@@ -46,20 +47,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       typescript: 4.9.5
-
-  docs:
-    specifiers:
-      '@sirse-dev/eslint-config': ^2.2.0
-      eslint: ^8.19.0
-      prettier: ^2.7.1
-      typescript: ^4.7.4
-      vitepress: 1.0.0-alpha.46
-    devDependencies:
-      '@sirse-dev/eslint-config': 2.2.0_ztlnmuobvwn63gpuifwwrjpt4i
-      eslint: 8.34.0
-      prettier: 2.8.4
-      typescript: 4.9.5
-      vitepress: 1.0.0-alpha.46
+      vitepress: 1.0.0-alpha.46_zula6vjvt3wdocc4mwcxqa6nzi
 
   example:
     specifiers:
@@ -119,6 +107,9 @@ packages:
     peerDependencies:
       '@algolia/client-search': '>= 4.9.1 < 6'
       algoliasearch: '>= 4.9.1 < 6'
+    peerDependenciesMeta:
+      '@algolia/client-search':
+        optional: true
     dependencies:
       '@algolia/autocomplete-shared': 1.7.4
       algoliasearch: 4.14.3
@@ -1487,10 +1478,10 @@ packages:
     resolution: {integrity: sha512-6SCwI7P8ao+se1TUsdZ7B4XzL+gqeQZnBc+2EONZlcVa0dVrk0NjETxozFKgMv0eEGH8QzP1fkN+A1rH61l4eg==}
     dev: true
 
-  /@docsearch/js/3.3.3:
+  /@docsearch/js/3.3.3_zula6vjvt3wdocc4mwcxqa6nzi:
     resolution: {integrity: sha512-2xAv2GFuHzzmG0SSZgf8wHX0qZX8n9Y1ZirKUk5Wrdc+vH9CL837x2hZIUdwcPZI9caBA+/CzxsS68O4waYjUQ==}
     dependencies:
-      '@docsearch/react': 3.3.3
+      '@docsearch/react': 3.3.3_zula6vjvt3wdocc4mwcxqa6nzi
       preact: 10.12.1
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -1499,7 +1490,7 @@ packages:
       - react-dom
     dev: true
 
-  /@docsearch/react/3.3.3:
+  /@docsearch/react/3.3.3_zula6vjvt3wdocc4mwcxqa6nzi:
     resolution: {integrity: sha512-pLa0cxnl+G0FuIDuYlW+EBK6Rw2jwLw9B1RHIeS4N4s2VhsfJ/wzeCi3CWcs5yVfxLd5ZK50t//TMA5e79YT7Q==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -1516,7 +1507,10 @@ packages:
       '@algolia/autocomplete-core': 1.7.4
       '@algolia/autocomplete-preset-algolia': 1.7.4_algoliasearch@4.14.3
       '@docsearch/css': 3.3.3
+      '@types/react': 18.0.28
       algoliasearch: 4.14.3
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     transitivePeerDependencies:
       - '@algolia/client-search'
     dev: true
@@ -2507,31 +2501,6 @@ packages:
       prettier: 2.8.4
     transitivePeerDependencies:
       - eslint-config-prettier
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - supports-color
-      - typescript
-    dev: true
-
-  /@sirse-dev/eslint-config/2.2.0_ztlnmuobvwn63gpuifwwrjpt4i:
-    resolution: {integrity: sha512-Aqm9WKaTa60b/HzYe1Q/lQyu+fG7RBInniS/EXPdB/m9LI7glF0vDhwNdZNQL7UeuFcAC+6P6eh6kQNGe3XVWw==}
-    peerDependencies:
-      eslint: '>=8'
-      prettier: '>=2'
-    dependencies:
-      '@typescript-eslint/eslint-plugin': 5.52.0_6cfvjsbua5ptj65675bqcn6oza
-      '@typescript-eslint/parser': 5.52.0_7kw3g6rralp5ps6mg3uyzz6azm
-      eslint: 8.34.0
-      eslint-config-prettier: 8.6.0_eslint@8.34.0
-      eslint-plugin-import: 2.27.5_mcvs2y73sfmcxqzpjj5lr7a2m4
-      eslint-plugin-lodash: 7.4.0_eslint@8.34.0
-      eslint-plugin-prettier: 4.2.1_u5wnrdwibbfomslmnramz52buy
-      eslint-plugin-react: 7.32.2_eslint@8.34.0
-      eslint-plugin-react-hooks: 4.6.0_eslint@8.34.0
-      eslint-plugin-unicorn: 43.0.2_eslint@8.34.0
-      eslint-plugin-workspaces: 0.7.0
-      prettier: 2.8.4
-    transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
@@ -5516,15 +5485,6 @@ packages:
       eslint: 7.32.0
     dev: true
 
-  /eslint-config-prettier/8.6.0_eslint@8.34.0:
-    resolution: {integrity: sha512-bAF0eLpLVqP5oEVUFKpMA+NnRFICwn9X8B5jrR9FcqnYBuPbqWEjTEspPWMj5ye6czoSLDweCzSo3Ko7gGrZaA==}
-    hasBin: true
-    peerDependencies:
-      eslint: '>=7.0.0'
-    dependencies:
-      eslint: 8.34.0
-    dev: true
-
   /eslint-import-resolver-node/0.3.7:
     resolution: {integrity: sha512-gozW2blMLJCeFpBwugLTGyvVjNoeo1knonXAcatC6bjPBZitotxdWf7Gimr25N4c0AAOo4eOUfaG82IJPDpqCA==}
     dependencies:
@@ -5620,23 +5580,6 @@ packages:
     dependencies:
       eslint: 7.32.0
       eslint-config-prettier: 8.6.0_eslint@7.32.0
-      prettier: 2.8.4
-      prettier-linter-helpers: 1.0.0
-    dev: true
-
-  /eslint-plugin-prettier/4.2.1_u5wnrdwibbfomslmnramz52buy:
-    resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      eslint: '>=7.28.0'
-      eslint-config-prettier: '*'
-      prettier: '>=2.0.0'
-    peerDependenciesMeta:
-      eslint-config-prettier:
-        optional: true
-    dependencies:
-      eslint: 8.34.0
-      eslint-config-prettier: 8.6.0_eslint@8.34.0
       prettier: 2.8.4
       prettier-linter-helpers: 1.0.0
     dev: true
@@ -11155,12 +11098,12 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/1.0.0-alpha.46:
+  /vitepress/1.0.0-alpha.46_zula6vjvt3wdocc4mwcxqa6nzi:
     resolution: {integrity: sha512-HiKiHzC0iTPsRsKs8XcsMeMzCpcCt5LWcX9mpDr288Ju+nQf1G8A2+Wm44ZkBsVv4EHxFK4ChmWyZrL1OJUXpg==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.3.3
-      '@docsearch/js': 3.3.3
+      '@docsearch/js': 3.3.3_zula6vjvt3wdocc4mwcxqa6nzi
       '@vitejs/plugin-vue': 4.0.0_vite@4.1.2+vue@3.2.47
       '@vue/devtools-api': 6.5.0
       '@vueuse/core': 9.13.0_vue@3.2.47
