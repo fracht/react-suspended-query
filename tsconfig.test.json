@@ -1,10 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "lib": [
-            "DOM",
-            "ESNext"
-        ],
+        "lib": ["DOM", "ESNext"],
         "module": "commonjs",
         "jsx": "react-jsx",
         "noImplicitReturns": false,

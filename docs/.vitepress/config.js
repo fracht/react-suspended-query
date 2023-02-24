@@ -18,13 +18,10 @@ const config = {
         sidebar: [
             {
                 text: 'Guide',
-                items: [
-                    { text: 'Quick start', link: '/quick-start' }
-                ]
-            }
-        ]
+                items: [{ text: 'Quick start', link: '/quick-start' }],
+            },
+        ],
     },
-}
-  
-export default config
-  
+};
+
+export default config;

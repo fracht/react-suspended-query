@@ -2,10 +2,7 @@
     "compilerOptions": {
         "target": "ES2015",
         "module": "commonjs",
-        "lib": [
-            "ESNext",
-            "DOM"
-        ],
+        "lib": ["ESNext", "DOM"],
         "jsx": "react",
         "strict": true,
         "noImplicitAny": true,
