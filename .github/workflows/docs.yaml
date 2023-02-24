@@ -5,8 +5,16 @@ on:
     branches:
       - main
 jobs:
-  cache-and-install:
+  deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v3
@@ -41,19 +49,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-  deploy:
-    needs: cache-and-install
-    runs-on: ubuntu-latest
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
       - name: Build
         run: pnpm --filter docs build
 
