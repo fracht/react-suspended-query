@@ -1,12 +1,8 @@
 {
-    "extends": [
-        "@sirse-dev/eslint-config"
-    ],
+    "extends": ["@sirse-dev/eslint-config"],
     "overrides": [
         {
-            "files": [
-                "./test/**"
-            ],
+            "files": ["./test/**"],
             "rules": {
                 "@typescript-eslint/naming-convention": "off",
                 "unicorn/prefer-spread": "off",
