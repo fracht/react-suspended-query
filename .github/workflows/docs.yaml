@@ -47,7 +47,7 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm --filter docs build
+        run: pnpm --filter docs build --base /${{ github.event.repository.name }}/
 
       - name: Deploy to GH Pages 🚀
         uses: peaceiris/actions-gh-pages@v3
