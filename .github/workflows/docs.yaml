@@ -52,12 +52,8 @@ jobs:
       - name: Build
         run: pnpm --filter docs build
 
-      - uses: actions/configure-pages@v2
-
-      - uses: actions/upload-pages-artifact@v1
+      - name: Deploy to GH Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: docs/.vitepress/dist
-
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v1
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/.vitepress/dist
