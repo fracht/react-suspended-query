@@ -1,15 +1,9 @@
 {
     "name": "example",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
     "private": true,
     "scripts": {
         "start": "webpack serve"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
