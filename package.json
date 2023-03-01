@@ -18,7 +18,6 @@
         "test:watch": "aqu test --passWithNoTests --watch",
         "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
         "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
-        "release": "pnpm build && changeset publish",
         "prepublishOnly": "aqu build",
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
@@ -37,7 +36,6 @@
     "homepage": "https://github.com/AlexShukel/react-suspended-query#readme",
     "devDependencies": {
         "@babel/core": "^7.20.12",
-        "@changesets/cli": "^2.26.0",
         "@esbuild-plugins/node-resolve": "^0.2.2",
         "@sirse-dev/eslint-config": "^1.0.12",
         "@testing-library/jest-dom": "^5.16.5",
