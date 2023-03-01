@@ -18,7 +18,10 @@ const config = {
         sidebar: [
             {
                 text: 'Guide',
-                items: [{ text: 'Quick start', link: '/quick-start' }],
+                items: [
+                    { text: 'Quick start', link: '/quick-start' },
+                    { text: 'Cache Groups', link: '/cache-groups' },
+                ],
             },
         ],
     },

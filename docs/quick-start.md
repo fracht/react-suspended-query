@@ -2,19 +2,19 @@
 
 ## Installation
 
--   Using `npm`:
+- Using `npm`:
 
 ```shell
 npm i react-suspended-query
 ```
 
--   Using `pnpm`:
+- Using `pnpm`:
 
 ```shell
 pnpm add react-suspended-query
 ```
 
--   Using `yarn`:
+- Using `yarn`:
 
 ```shell
 yarn add react-suspended-query
@@ -22,74 +22,63 @@ yarn add react-suspended-query
 
 ## Getting started
 
-Firstly, you need to create a `fetcher` function that must return a `Promise` that will get data from your API.
-
-For example:
+1. Wrap your App with `ErrorBoundary` and `Suspense`. For example:
 
 ```jsx
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-```
+import React, { Suspense } from 'react';
 
-Next, you must create a `CacheGroup` using `createCacheGroup()` function and wrap your App with these components:
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-```jsx
-const CacheGroup = createCacheGroup();
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
 
 export const App = () => {
     return (
-        <CacheGroup.Provider>
-            <ErrorBoundary>
-                <Suspense fallback={<FallbackComponent />}>
-                    // Your app code
-                </Suspense>
-            </ErrorBoundary>
-        </CacheGroup.Provider>
+        <ErrorBoundary>
+            <Suspense fallback={<div>Loading...</div>}>
+                <MyComponent />
+            </Suspense>
+        </ErrorBoundary>
     );
 };
 ```
-
--   `CacheGroup.Provider` stores fetch results in a context. You can wrap entire App to make globally available cache or wrap only part of your App to make local cache. You are not limited to the number of `CacheGroup` providers.
 
 -   `ErrorBoundary` - if an error has occurred while fetching data, you need to use error boundary to render appropriate UI. See [official documentation](https://beta.reactjs.org/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
 
 -   `Suspense` - component to render `fallback` when data is being fetched. See [official documentation](https://beta.reactjs.org/reference/react/Suspense).
 
-It is not mandatory to wrap an entire App with these components - you can create the `loading` and `error` rendering logic for each component independently.
-
-## Fetch static resource
-
-If you need to fetch some static resource that do not depend on any dynamic data, you can use `useQuery` like this:
+2. In `MyComponent` use `useQuery` hook to fetch data:
 
 ```jsx{2}
+import { useQuery } from 'react-suspended-query';
+
 const MyComponent = () => {
-    const data = useQuery('https://some-url/static', fetcher, CacheGroup);
+    const data = useQuery('https://some-url/data', key => fetch(key).then(res => res.json()));
 
     return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
 };
 ```
 
-Or, you can pass an array in a first argument that will be passed to the fetcher:
+- In the first argument you provide a string or a tuple of any values that will be passed to the function defined in the next argument.
 
-```jsx{2}
-const MyComponent = () => {
-    const data = useQuery(['https://some-url/static', ...], fetcher, CacheGroup);
+- In the second argument you provide a function that will fetch data and return a `Promise`.
 
-    return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
-};
-```
+- There is an optional third argument [CacheGroup](./cache-groups.md). If you do not define it, the results of `useQuery` calls will be cached and saved on global `window` object.
 
-## Fetch dynamic data
-
-If you need to fetch data that depends on some dynamic value (for example, current user id), you can use `useQuery` as follows:
-
-```jsx{2}
-const MyComponent = ({ userId }) => {
-    const data = useQuery(`https://some-url/data?id=${userId}`, fetcher, CacheGroup);
-
-    return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
-};
-```
-
-Now every time the `userId` changes, fetcher will be invoked and cache updated automatically!
-
-Now you are ready to get started! 🎉
+Now you are ready to go! 🎉

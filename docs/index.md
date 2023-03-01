@@ -2,9 +2,11 @@
 
 ## What is it?
 
+TODO: refactor this page
+
 -   React fetching library
 -   Uses [Suspense API](https://beta.reactjs.org/reference/react/Suspense)
--   Has `cache groups` system to cache fetched values
+-   Has [Cache Groups](./cache-groups) system to cache fetched values
 -   Inspired by [swr](https://swr.vercel.app/)
 
 ## The classic way to fetch data
