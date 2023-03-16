@@ -54,7 +54,7 @@ class ErrorBoundary extends Component<PropsWithChildren<{ fallback: ReactNode }>
         super(props);
         this.state = {
             hasError: false,
-        }
+        };
     }
 
     static getDerivedStateFromError() {
@@ -64,13 +64,11 @@ class ErrorBoundary extends Component<PropsWithChildren<{ fallback: ReactNode }>
     public render(): React.ReactNode {
         const { children, fallback } = this.props;
 
-        if(this.state.hasError) {
-            return (
-                <Fragment>{fallback}</Fragment>
-            )
+        if (this.state.hasError) {
+            return <Fragment>{fallback}</Fragment>;
         }
 
-        return <Fragment>{children}</Fragment>
+        return <Fragment>{children}</Fragment>;
     }
 }
 
