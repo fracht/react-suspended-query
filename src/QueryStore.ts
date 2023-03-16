@@ -19,17 +19,17 @@ export class QueryStore {
             };
         }
 
-        if (this.pendingResultsStore.has(stringifiedKey)) {
-            return {
-                status: 'pending',
-                promise: this.pendingResultsStore.get(stringifiedKey)!,
-            };
-        }
-
         if (this.errorsStore.has(stringifiedKey)) {
             return {
                 status: 'rejected',
                 reason: this.errorsStore.get(stringifiedKey)!,
+            };
+        }
+
+        if (this.pendingResultsStore.has(stringifiedKey)) {
+            return {
+                status: 'pending',
+                promise: this.pendingResultsStore.get(stringifiedKey)!,
             };
         }
 
