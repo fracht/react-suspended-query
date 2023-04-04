@@ -1,14 +1,14 @@
-import { StrictMap } from '../src/StrictMap';
+import { ValueStore } from '../src/ValueStore';
 
 describe('StrictMap functionality', () => {
     it('should throw error when getting not existing value', () => {
-        const map = new StrictMap();
+        const map = new ValueStore();
 
         expect(() => map.get('hello')).toThrow();
     });
 
     it('should not throw an error when getting existing value', () => {
-        const map = new StrictMap();
+        const map = new ValueStore();
 
         map.set('hello', 42);
 

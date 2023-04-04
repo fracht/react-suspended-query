@@ -17,12 +17,19 @@ const mockHas = jest.fn((key: string) => {
     return key in resultsStorage;
 });
 
-class GlobalQueryStore extends QueryStore {
-    protected override resultsStore: ValueStore<unknown> = {
-        set: mockSet,
-        get: mockGet,
-        has: mockHas,
+class MockResultsStore extends ValueStore<unknown> {
+    public override set = (key: string, value: unknown) => {
+        mockSet(key, value);
+        return this;
     };
+
+    public override get = mockGet;
+
+    public override has = mockHas;
+}
+
+class GlobalQueryStore extends QueryStore {
+    protected override resultsStore: ValueStore<unknown> = new MockResultsStore();
 }
 
 const CacheGroup = createCacheGroup(new GlobalQueryStore());

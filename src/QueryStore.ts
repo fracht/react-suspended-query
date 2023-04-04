@@ -1,13 +1,12 @@
 import { FetchResult } from './FetchResult';
 import { Key } from './Key';
-import { StrictMap } from './StrictMap';
 import { stringifyKey } from './utils/stringifyKey';
 import { ValueStore } from './ValueStore';
 
 export class QueryStore {
-    protected resultsStore: ValueStore<unknown> = new StrictMap<unknown>();
-    protected pendingResultsStore: ValueStore<Promise<unknown>> = new StrictMap<Promise<unknown>>();
-    protected errorsStore: ValueStore<unknown> = new StrictMap<unknown>();
+    protected resultsStore: ValueStore<unknown> = new ValueStore<unknown>();
+    protected pendingResultsStore: ValueStore<Promise<unknown>> = new ValueStore<Promise<unknown>>();
+    protected errorsStore: ValueStore<unknown> = new ValueStore<unknown>();
 
     public get = (key: Key): FetchResult => {
         const stringifiedKey = stringifyKey(key);
