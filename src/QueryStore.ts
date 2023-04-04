@@ -8,7 +8,7 @@ export class QueryStore {
     protected pendingResultsStore: ValueStore<Promise<unknown>> = new Map<string, Promise<unknown>>();
     protected errorsStore: ValueStore = new Map<string, unknown>();
 
-    private deleteValues = (key: string) => {
+    public delete = (key: string) => {
         this.resultsStore.delete(key);
         this.pendingResultsStore.delete(key);
         this.errorsStore.delete(key);
@@ -44,7 +44,7 @@ export class QueryStore {
     public set = (key: Key, value: FetchResult): void => {
         const stringifiedKey = stringifyKey(key);
 
-        this.deleteValues(stringifiedKey);
+        this.delete(stringifiedKey);
 
         if (value.status === 'fulfilled') {
             this.resultsStore.set(stringifiedKey, value.value);
@@ -65,7 +65,7 @@ export class QueryStore {
         );
     };
 
-    public clearAll = () => {
+    public clear = () => {
         this.resultsStore.clear();
         this.pendingResultsStore.clear();
         this.errorsStore.clear();
