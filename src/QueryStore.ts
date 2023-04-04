@@ -1,13 +1,18 @@
 import { FetchResult } from './FetchResult';
 import { Key } from './Key';
-import { StrictMap } from './StrictMap';
 import { stringifyKey } from './utils/stringifyKey';
 import { ValueStore } from './ValueStore';
 
 export class QueryStore {
-    protected resultsStore: ValueStore<unknown> = new StrictMap<unknown>();
-    protected pendingResultsStore: ValueStore<Promise<unknown>> = new StrictMap<Promise<unknown>>();
-    protected errorsStore: ValueStore<unknown> = new StrictMap<unknown>();
+    protected resultsStore: ValueStore = new Map<string, unknown>();
+    protected pendingResultsStore: ValueStore<Promise<unknown>> = new Map<string, Promise<unknown>>();
+    protected errorsStore: ValueStore = new Map<string, unknown>();
+
+    public delete = (key: string) => {
+        this.resultsStore.delete(key);
+        this.pendingResultsStore.delete(key);
+        this.errorsStore.delete(key);
+    };
 
     public get = (key: Key): FetchResult => {
         const stringifiedKey = stringifyKey(key);
@@ -39,6 +44,8 @@ export class QueryStore {
     public set = (key: Key, value: FetchResult): void => {
         const stringifiedKey = stringifyKey(key);
 
+        this.delete(stringifiedKey);
+
         if (value.status === 'fulfilled') {
             this.resultsStore.set(stringifiedKey, value.value);
         } else if (value.status === 'pending') {
@@ -56,5 +63,11 @@ export class QueryStore {
             this.pendingResultsStore.has(stringifiedKey) ||
             this.errorsStore.has(stringifiedKey)
         );
+    };
+
+    public clear = () => {
+        this.resultsStore.clear();
+        this.pendingResultsStore.clear();
+        this.errorsStore.clear();
     };
 }

@@ -1,5 +1,7 @@
-export type ValueStore<TData> = {
-    get: (key: string) => TData;
+export type ValueStore<TData = unknown> = {
     set: (key: string, value: TData) => void;
+    get: (key: string) => TData | undefined;
     has: (key: string) => boolean;
+    delete: (key: string) => void;
+    clear: () => void;
 };

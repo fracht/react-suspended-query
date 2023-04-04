@@ -1,9 +1,8 @@
 import { render, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
-import { createCacheGroup, QueryStore, useQuery } from '../src';
+import { createCacheGroup, QueryStore, useQuery, ValueStore } from '../src';
 import '@testing-library/jest-dom';
 import { stringifyKey } from '../src/utils/stringifyKey';
-import { ValueStore } from '../src/ValueStore';
 
 const resultsStorage: Record<string, unknown> = {};
 
@@ -18,10 +17,12 @@ const mockHas = jest.fn((key: string) => {
 });
 
 class GlobalQueryStore extends QueryStore {
-    protected override resultsStore: ValueStore<unknown> = {
+    protected override resultsStore: ValueStore = {
         set: mockSet,
         get: mockGet,
         has: mockHas,
+        delete: jest.fn(),
+        clear: jest.fn(),
     };
 }
 

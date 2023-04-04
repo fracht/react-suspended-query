@@ -8,7 +8,9 @@ jobs:
     changeset:
         name: Check for changeset existence
         runs-on: ubuntu-latest
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'chore') }}
+        # TODO: fix changesets cli
+        if: false
+        # if: ${{ !contains(github.event.pull_request.labels.*.name, 'chore') }}
 
         steps:
             - name: Checkout
