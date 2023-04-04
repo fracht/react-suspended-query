@@ -36,6 +36,7 @@
     "homepage": "https://github.com/AlexShukel/react-suspended-query#readme",
     "devDependencies": {
         "@babel/core": "^7.20.12",
+        "@changesets/cli": "^2.26.1",
         "@esbuild-plugins/node-resolve": "^0.2.2",
         "@sirse-dev/eslint-config": "^1.0.12",
         "@testing-library/jest-dom": "^5.16.5",
@@ -45,6 +46,7 @@
         "@types/react": "^18.0.14",
         "@types/testing-library__jest-dom": "^5.14.5",
         "aqu": "^0.3.2",
+        "danger": "^11.2.4",
         "esbuild": "^0.17.8",
         "eslint": "^8.19.0",
         "prettier": "^2.7.1",
