@@ -4,9 +4,15 @@ import { stringifyKey } from './utils/stringifyKey';
 import { ValueStore } from './ValueStore';
 
 export class QueryStore {
-    protected resultsStore: ValueStore<unknown> = new ValueStore<unknown>();
-    protected pendingResultsStore: ValueStore<Promise<unknown>> = new ValueStore<Promise<unknown>>();
-    protected errorsStore: ValueStore<unknown> = new ValueStore<unknown>();
+    protected resultsStore: ValueStore = new Map<string, unknown>();
+    protected pendingResultsStore: ValueStore<Promise<unknown>> = new Map<string, Promise<unknown>>();
+    protected errorsStore: ValueStore = new Map<string, unknown>();
+
+    private deleteValues = (key: string) => {
+        this.resultsStore.delete(key);
+        this.pendingResultsStore.delete(key);
+        this.errorsStore.delete(key);
+    };
 
     public get = (key: Key): FetchResult => {
         const stringifiedKey = stringifyKey(key);
@@ -38,6 +44,8 @@ export class QueryStore {
     public set = (key: Key, value: FetchResult): void => {
         const stringifiedKey = stringifyKey(key);
 
+        this.deleteValues(stringifiedKey);
+
         if (value.status === 'fulfilled') {
             this.resultsStore.set(stringifiedKey, value.value);
         } else if (value.status === 'pending') {
@@ -55,5 +63,11 @@ export class QueryStore {
             this.pendingResultsStore.has(stringifiedKey) ||
             this.errorsStore.has(stringifiedKey)
         );
+    };
+
+    public clearAll = () => {
+        this.resultsStore.clear();
+        this.pendingResultsStore.clear();
+        this.errorsStore.clear();
     };
 }

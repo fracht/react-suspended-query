@@ -1,9 +1,7 @@
-export class ValueStore<TData> extends Map<string, TData> {
-    public get = (key: string): TData => {
-        if (!this.has(key)) {
-            throw new Error(`Cannot get data with key "${key}" from StrictMap.`);
-        }
-
-        return super.get(key)!;
-    };
-}
+export type ValueStore<TData = unknown> = {
+    set: (key: string, value: TData) => void;
+    get: (key: string) => TData | undefined;
+    has: (key: string) => boolean;
+    delete: (key: string) => void;
+    clear: () => void;
+};
