@@ -4,7 +4,7 @@
     "updateInternalDependencies": "patch",
     "linked": [],
     "access": "restricted",
-    "baseBranch": "master",
+    "baseBranch": "main",
     "ignore": [],
     "changelog": "@changesets/cli/changelog"
 }
