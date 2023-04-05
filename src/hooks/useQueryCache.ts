@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { Fetcher } from '../Fetcher';
 import { FetchResult, PromisePendingResult } from '../FetchResult';
@@ -8,40 +8,43 @@ import { QueryStore } from '../QueryStore';
 import { convertKeyToArguments } from '../utils/convertKeyToArguments';
 
 export const useQueryCache = (queryStore?: QueryStore): QueryCacheBag => {
-    const cache = useRef<QueryStore>(queryStore ?? new QueryStore());
+    const cache = useMemo(() => queryStore ?? new QueryStore(), [queryStore]);
 
-    const getValue = useCallback(<TData, TKey extends Key>(key: TKey, fetcher: Fetcher<TData, TKey>): FetchResult => {
-        if (cache.current.has(key)) {
-            return cache.current.get(key) as FetchResult;
-        }
+    const getValue = useCallback(
+        <TData, TKey extends Key>(key: TKey, fetcher: Fetcher<TData, TKey>): FetchResult => {
+            if (cache.has(key)) {
+                return cache.get(key) as FetchResult;
+            }
 
-        const promise = (fetcher as (...arguments_: unknown[]) => Promise<TData>)(...convertKeyToArguments(key))
-            .then((value) => {
-                cache.current.set(key, {
-                    status: 'fulfilled',
-                    value,
+            const promise = (fetcher as (...arguments_: unknown[]) => Promise<TData>)(...convertKeyToArguments(key))
+                .then((value) => {
+                    cache.set(key, {
+                        status: 'fulfilled',
+                        value,
+                    });
+
+                    return value;
+                })
+                .catch((error) => {
+                    cache.set(key, {
+                        status: 'rejected',
+                        reason: error,
+                    });
+
+                    return error;
                 });
 
-                return value;
-            })
-            .catch((error) => {
-                cache.current.set(key, {
-                    status: 'rejected',
-                    reason: error,
-                });
+            const pendingFetchResult: PromisePendingResult = {
+                status: 'pending',
+                promise,
+            };
 
-                return error;
-            });
+            cache.set(key, pendingFetchResult);
 
-        const pendingFetchResult: PromisePendingResult = {
-            status: 'pending',
-            promise,
-        };
-
-        cache.current.set(key, pendingFetchResult);
-
-        return pendingFetchResult;
-    }, []);
+            return pendingFetchResult;
+        },
+        [cache],
+    );
 
     return {
         getValue,
