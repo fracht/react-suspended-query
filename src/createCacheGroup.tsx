@@ -3,15 +3,14 @@ import React from 'react';
 import { CacheGroup } from './CacheGroup';
 import { useQueryCache } from './hooks/useQueryCache';
 import { QueryCacheBag } from './QueryCacheBag';
-import { QueryStore } from './QueryStore';
 
-export const createCacheGroup = (customStore?: QueryStore): CacheGroup => {
+export const createCacheGroup = (): CacheGroup => {
     const CacheContext = createSafeContext<QueryCacheBag>();
 
     return {
         CacheContext,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        Provider: ({ children }) => {
+        Provider: ({ children, customStore }) => {
             const cacheController = useQueryCache(customStore);
 
             return <CacheContext.Provider value={cacheController}>{children}</CacheContext.Provider>;

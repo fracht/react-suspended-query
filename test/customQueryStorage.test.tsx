@@ -26,7 +26,8 @@ class GlobalQueryStore extends QueryStore {
     };
 }
 
-const CacheGroup = createCacheGroup(new GlobalQueryStore());
+const customStore = new GlobalQueryStore();
+const CacheGroup = createCacheGroup();
 
 type TestComponentProps = {
     fetcher: () => Promise<string>;
@@ -46,7 +47,7 @@ describe('Possibility to provide custom query storage', () => {
 
         const { getByText } = render(<TestComponent fetcher={mockFetcher} />, {
             wrapper: ({ children }) => (
-                <CacheGroup.Provider>
+                <CacheGroup.Provider customStore={customStore}>
                     <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
                 </CacheGroup.Provider>
             ),
