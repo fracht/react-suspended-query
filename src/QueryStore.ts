@@ -70,4 +70,10 @@ export class QueryStore {
         this.pendingResultsStore.clear();
         this.errorsStore.clear();
     };
+
+    public keys = () => {
+        return [
+            ...new Set([...this.resultsStore.keys(), ...this.errorsStore.keys(), ...this.pendingResultsStore.keys()]),
+        ];
+    };
 }

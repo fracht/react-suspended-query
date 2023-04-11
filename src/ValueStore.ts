@@ -4,4 +4,5 @@ export type ValueStore<TData = unknown> = {
     has: (key: string) => boolean;
     delete: (key: string) => void;
     clear: () => void;
+    keys: () => IterableIterator<string>;
 };
